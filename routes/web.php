@@ -18,6 +18,7 @@ Route::get('/', function () {
 });
 
 Route::resource('movies', 'MoviesController');
+Route::resource('actors', 'ActorsController');
 
 Auth::routes();
 
