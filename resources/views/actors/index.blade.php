@@ -39,7 +39,7 @@
                         @foreach($actors as $actor)
                             <tr>
                                 <td>{{$actor->id}}</td>
-                                <td><a href="route('actors.show',$actor->id)">{{$actor->name}}</a></td>
+                                <td><a href="{{route('actors.show',$actor->id)}}">{{$actor->name}}</a></td>
                                 <td align=""><a href="{{ route('actors.edit',$actor->id) }}"><i class="fa fa-pencil-square-o" aria-hidden="true" style="font-size:24px" ></a></i></td>
                                 {{-- <td align=""><a href="{{ route('actors.destroy',$actor->id) }}"><i class="fa fa-trash-o" style="font-size:24px; color:red" ></a></i></td> --}}
                                 <td align="">

@@ -43,7 +43,7 @@ class ActorsController extends Controller
     public function store(Request $request)
     {
         // dd($request->all());
-        $rules = ['name' =>'required|string|min:1','birthday'=>'date|required','notes'=>'required|alpha_num|min:1|max:100'];
+        $rules = ['name' =>'required|string|min:1','birthday'=>'date|required','notes'=>'required|string|min:1|max:100'];
         $formData = $request->all();
         $validator = Validator::make($formData, $rules);
 
@@ -62,7 +62,9 @@ class ActorsController extends Controller
      */
     public function show($id)
     {
-        //
+        $actors = Actors::find($id);
+
+        return View::make('actors.show')->with('actors',$actors);
     }
 
     /**
