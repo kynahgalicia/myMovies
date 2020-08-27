@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
 use App\Movies;
+use Illuminate\Support\Facades\Validator;
 
 class MoviesController extends Controller
 {
@@ -43,9 +44,22 @@ class MoviesController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
-        Movies::create($request->all());
-        return Redirect::to('movies')->with('success','New Movie added!');
+        $rules = [
+            'title' =>'required|string',
+            'year'=>'date_format(%y)',
+            'plot'=>'string|min:1|max:100'
+        ];
+
+        $formData = $request->all();
+        $validator = Validator::make($formData, $rules);
+
+        if($validator->passes()){
+            Movies::create($request->all());
+
+            return Redirect::to('movies')->with('success','New Movie added!');
+        }
+        return redirect()->back()->withInput()->withErrors($validator);
+    
     }
 
     /**
