@@ -18,7 +18,14 @@ Route::get('/', function () {
 });
 
 Route::resource('movies', 'MoviesController');
+// Route::resource('movies', 'MoviesController')->middleware('auth');
+// Route::get('/movies/restore/{id}',['uses' => 'MoviesController@restore', 'as' => 'movies.restore']);
+
 Route::resource('actors', 'ActorsController');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
 
 Auth::routes();
 

@@ -46,7 +46,7 @@ class MoviesController extends Controller
     {
         $rules = [
             'title' =>'required|string',
-            'year'=>'date_format(%y)',
+            'year'=>'date_format(%y)', //has an error with the format
             'plot'=>'string|min:1|max:100'
         ];
 

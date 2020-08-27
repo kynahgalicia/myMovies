@@ -8,6 +8,7 @@
     </head>
 
     <body>
+
         @section('body')
 
         <div class="container">
@@ -69,7 +70,7 @@
         </div>
 
         @endsection
-
+{{-- 
     </body>
 
-</html>
+</html> --}}
