@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
 use App\Actors;
+use Illuminate\Support\Facades\Validator;
 
 
 class ActorsController extends Controller
@@ -42,8 +43,15 @@ class ActorsController extends Controller
     public function store(Request $request)
     {
         // dd($request->all());
-        Actors::create($request->all());
-        return Redirect::to('actors')->with('success','New Actor Record added!');
+        $rules = ['name' =>'required','birthday'=>'date','notes'=>'required'];
+        $formData = $request->all();
+        $validator = Validator::make($formData, $rules);
+
+        if ($validator->passes()) {
+            Actors::create($request->all());
+            return Redirect::to('actors')->with('success','New Actor Record added!');
+        }
+        return redirect()->back()->withInput()->withErrors($validator);
     }
 
     /**
