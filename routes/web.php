@@ -17,8 +17,8 @@ Route::get('/', function () {
     return view('index');
 });
 
-Route::resource('movies', 'MoviesController');
-// Route::resource('movies', 'MoviesController')->middleware('auth');
+// Route::resource('movies', 'MoviesController');
+Route::resource('movies', 'MoviesController')->middleware('auth');
 Route::get('/movies/restore/{id}',['uses' => 'MoviesController@restore', 'as' => 'movies.restore']);
 
 Route::resource('actors', 'ActorsController');
