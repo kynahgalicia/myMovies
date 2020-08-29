@@ -32,6 +32,7 @@
                         <th>Name</th>
                         <th>Edit</th>
                         <th>Delete</th>
+                        <th>Restore</th>
                         </tr>
                     </thead>
 
@@ -46,6 +47,8 @@
                                     {!! Form::open(array('route' => array('actors.destroy', $actor->id),'method'=>'DELETE')) !!}
                                         <button><i class="fa fa-trash-o" style="font-size:24px; color:red" ></i></button>
                                     {!! Form::close() !!}
+                                </td>
+                                <td align="left"><a href="{{ route('actors.restore',$actor->id) }}" ><i class="fa fa-undo" style="font-size:24px; color:green" ></i></a></td>
                             </tr>
                         @endforeach
 

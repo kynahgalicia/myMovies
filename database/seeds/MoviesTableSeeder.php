@@ -18,7 +18,7 @@ class MoviesTableSeeder extends Seeder
             DB::table('movies')->insert([
                 'title'=>$faker->sentence,
                 'year'=>$faker->year($max='now'),
-                'plot'=>implode($faker->paragraphs(2)),                
+                'plot'=>implode($faker->paragraphs(2)),
                 'created_at'=>$faker->dateTime($max = 'now', $timezone = null),
                 'updated_at'=>$faker->dateTime($max = 'now', $timezone = null),
             ]);

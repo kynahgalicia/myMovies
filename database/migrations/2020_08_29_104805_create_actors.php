@@ -15,10 +15,11 @@ class CreateActors extends Migration
     {
         Schema::create('actors', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
             $table->string('name');
             $table->date('birthday');
             $table->longText('notes');
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 

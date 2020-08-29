@@ -18,10 +18,14 @@ Route::get('/', function () {
     return view('index');
 });
 
+Route::get('/home', 'HomeController@index')->name('home');
+
+Route::resource('actors', 'ActorsController')->middleware('auth');
+
 Route::resource('movies', 'MoviesController')->middleware('auth');
 
 Route::get('/movies/restore/{id}',['uses' => 'MoviesController@restore', 'as' => 'movies.restore']);
 
-Route::resource('actors', 'ActorsController');
+Route::get('/actors/restore/{id}',['uses' => 'ActorsController@restore', 'as' => 'actors.restore']);
 
-Route::get('/home', 'HomeController@index')->name('home');
+
