@@ -18,7 +18,8 @@ class MoviesController extends Controller
     public function index()
     {
         //----pagination-----
-        $movies = Movies::orderBy('id','ASC')->paginate(10);
+        $movies = Movies::orderBy('id','ASC')->withTrashed()->paginate(10);
+        // $movies = Movies::orderBy('id','ASC')->paginate(10);
         // $movies = DB::table('movies')-paginate(10);
 
         // $movies = Movies::all();
@@ -46,7 +47,7 @@ class MoviesController extends Controller
     {
         $rules = [
             'title' =>'required|string',
-            'year'=>'date_format(%y)', //has an error with the format
+            'year' => 'integer|min:' . (date("Y") - 100) . '|max:' . date("Y"),
             'plot'=>'string|min:1|max:100'
         ];
 
@@ -101,7 +102,7 @@ class MoviesController extends Controller
         $movies = Movies::find($id);
         // dd($customer);
         $movies->update($request->all());
-        return Redirect::to('/movies')->with('success','Movie Data updated!');
+        return Redirect::to('/movies')->with('success','Movie data updated!');
     }
 
     /**
@@ -115,5 +116,11 @@ class MoviesController extends Controller
         $movies = Movies::findOrFail($id);
         $movies->delete();
         return Redirect::to('/movies')->with('success','Movie data deleted!');
+    }
+
+    public function restore($id) 
+    {
+        Movies::withTrashed()->where('id',$id)->restore();
+        return  Redirect::route('movies.index')->with('success','Movie restored successfully!');
     }
 }

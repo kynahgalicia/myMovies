@@ -16,11 +16,11 @@ class MoviesTableSeeder extends Seeder
 
         for($i=0; $i<=9; $i++) {
             DB::table('movies')->insert([
-                'created_at'=>$faker->dateTime($max = 'now', $timezone = null),
-                'updated_at'=>$faker->dateTime($max = 'now', $timezone = null),
                 'title'=>$faker->sentence,
                 'year'=>$faker->year($max='now'),
-                'plot'=>implode($faker->paragraphs(2)),
+                'plot'=>implode($faker->paragraphs(2)),                
+                'created_at'=>$faker->dateTime($max = 'now', $timezone = null),
+                'updated_at'=>$faker->dateTime($max = 'now', $timezone = null),
             ]);
         }
     }

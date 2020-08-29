@@ -33,6 +33,7 @@
                         <th>Title</th>
                         <th>Edit</th>
                         <th>Delete</th>
+                        <th>Restore</th>
                         </tr>
                     </thead>
 
@@ -42,17 +43,16 @@
                                 <td>{{$movie->id}}</td>
                                 <td><a href="{{route('movies.show',$movie->id)}}">{{$movie->title}}</a></td>
                                 <td align="left"><a href="{{ route('movies.edit',$movie->id) }}"> <i class="fa fa-pencil-square-o" aria-hidden="true" style="font-size:24px" ></a></i></td>
-                                {{-- <td align="left"><a href="{{ route('movies.destroy',$movie->id) }}"> <i class="fa fa-trash-o" style="font-size:24px; color:red"></a></i></td> --}}
-
-                                <td align="center">
+                                <td align="left">
                                     {!! Form::open(array('route' => array('movies.destroy', $movie->id),'method'=>'DELETE')) !!}
                                         <button><i class="fa fa-trash-o" style="font-size:24px; color:red" ></i></button>
                                     {!! Form::close() !!}
+                                </td>
 
-                                {{-- {{ Form::open(array('route' => 'movies.destroy' . $movies->id, 'class' => 'pull-right')) }}
-                                    {{ Form::hidden('_method', 'DELETE') }}
-                                    {{ Form::submit('Delete this Movies', array('class' => 'btn btn-warning')) }}
-                                {{ Form::close() }} --}}
+                                <td align="left"><a href="{{ route('movies.restore',$movie->id) }}" ><i class="fa fa-undo" style="font-size:24px; color:red" ></i></a></td>
+                                </tr> 
+                                {{-- @endforeach --}}
+                                    
                             </tr>
 
                         @endforeach
@@ -70,7 +70,7 @@
         </div>
 
         @endsection
-{{-- 
+
     </body>
 
-</html> --}}
+</html>

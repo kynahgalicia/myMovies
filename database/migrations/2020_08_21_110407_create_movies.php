@@ -15,10 +15,11 @@ class CreateMovies extends Migration
     {
         Schema::create('movies', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
             $table->string('title');
             $table->integer('year');
             $table->longText('plot');
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 
