@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('body')
+@section('content')
     <div class="container">
     <h2>Edit Actor Details</h2>
     {!! Form::model($actors,['method'=>'PATCH','route' => ['actors.update',$actors->id]]) !!}

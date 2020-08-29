@@ -8,7 +8,7 @@
     </head>
 
     <body>
-        @section('body')
+        @section('content')
 
         <div class="container">
 

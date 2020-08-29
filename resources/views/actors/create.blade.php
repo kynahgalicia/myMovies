@@ -1,5 +1,5 @@
 @extends('layouts.app')
-    @section('body')
+    @section('content')
         {{-- {{dd($errors)}} --}}
                 {{-- display the error messages on a list
                 <ul class="errors">
