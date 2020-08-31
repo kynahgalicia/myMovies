@@ -18,7 +18,7 @@ class ActorsController extends Controller
      */
     public function index()
     {
-        $actors = Actors::orderBy('id','ASC')->paginate(10);
+        $actors = Actors::orderBy('id','ASC')->withTrashed()->paginate(10);
         // $actors = Actors::all();
         // dd($actors);
         return View::make('actors.index',compact('actors'));
@@ -105,5 +105,11 @@ class ActorsController extends Controller
         $actors = Actors::findOrFail($id);
         $actors->delete();
         return Redirect::to('/actors')->with('success','Actor Data Deleted!');
+    }
+
+    public function restore($id)
+    {
+        Actors::withTrashed()->where('id',$id)->restore();
+        return  Redirect::route('actors.index')->with('success','Actor restored successfully!');
     }
 }
