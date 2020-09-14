@@ -6,7 +6,7 @@
 
     <h2>Edit Movies</h2>
 
-    {!! Form::model($movies,['method'=>'PATCH','route' => ['movies.update',$movies->id]])!!}
+    {!! Form::model($movies,['method'=>'PATCH','route' => ['movies.update',$movies->movies_id]])!!}
         {{-- {{csrf_field()}}
         {{ method_field('PATCH') }} --}}
 
@@ -21,8 +21,18 @@
     </div> 
 
     <div class="form-group"> 
+        <label for="runtime" class="control-label">Runtime</label>
+        {{ Form::text('runtime',null,array('class'=>'form-control','id'=>'runtime')) }}
+    </div>
+
+    <div class="form-group"> 
         <label for="plot" class="control-label">Plot</label>
         {{ Form::text('plot',null,array('class'=>'form-control','id'=>'plot')) }}
+    </div>
+
+    <div class="form-group">
+        <label for="genres_id">Genres:</label>
+        {!! Form::select('genres_id',$genres, null,['class' => 'form-control']) !!}
     </div>
 
     <button type="submit" class="btn btn-primary">Save</button>

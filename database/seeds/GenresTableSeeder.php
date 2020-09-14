@@ -3,7 +3,7 @@
 use Illuminate\Database\Seeder;
 use Faker\Factory as Faker;
 
-class ActorsTableSeeder extends Seeder
+class GenresTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,13 +12,11 @@ class ActorsTableSeeder extends Seeder
      */
     public function run()
     {
-        $faker = Faker::create('App\Actors');
+        $faker = Faker::create('App\Genres');
 
         for($i=0; $i<=9; $i++) {
-            DB::table('actors')->insert([
-                'name'=>$faker->name,
-                'birthday'=>$faker->date,
-                'notes'=>$faker->sentence,
+            DB::table('genres')->insert([
+                'genre'=>$faker->word,
                 'created_at'=>$faker->dateTime($max = 'now', $timezone = null),
                 'updated_at'=>$faker->dateTime($max = 'now', $timezone = null),
             ]);

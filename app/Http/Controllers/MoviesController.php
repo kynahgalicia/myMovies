@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
 use App\Movies;
+use App\Genres;
 use Illuminate\Support\Facades\Validator;
 
 class MoviesController extends Controller
@@ -18,12 +19,8 @@ class MoviesController extends Controller
     public function index()
     {
         //----pagination-----
-        $movies = Movies::orderBy('id','ASC')->withTrashed()->paginate(10);
-        // $movies = Movies::orderBy('id','ASC')->paginate(10);
-        // $movies = DB::table('movies')-paginate(10);
+        $movies = Movies::orderBy('movies_id','ASC')->withTrashed()->paginate(10);
 
-        // $movies = Movies::all();
-        // dd($movies);
         return View::make('movies.index',compact('movies'));
     }
 
@@ -34,7 +31,8 @@ class MoviesController extends Controller
      */
     public function create()
     {
-        return View::make('movies.create');
+        $genres = Genres::pluck('genre','genres_id');
+        return View::make('movies.create', compact('genres'));
     }
 
     /**
@@ -48,14 +46,28 @@ class MoviesController extends Controller
         $rules = [
             'title' =>'required|string',
             'year' => 'integer|min:' . (date("Y") - 100) . '|max:' . date("Y"),
-            'plot'=>'string|min:1|max:100'
+            'plot'=>'string|min:1|max:1000',
+            'runtime'=>'required|integer|min:100|max:200',
+            'genres_id' => 'integer'
         ];
 
         $formData = $request->all();
+
         $validator = Validator::make($formData, $rules);
 
         if($validator->passes()){
-            Movies::create($request->all());
+            // Movies::create($formData);
+
+            $genre = Genres::find($formData['genres_id']);
+            // dd($genre->genres_id);
+            
+            $movies = new Movies();
+            $movies->title = $formData['title'];
+            $movies->plot = $formData['plot'];
+            $movies->runtime = $formData['runtime'];
+            $movies->year = $formData['year'];
+            $movies->genres()->associate($genre);
+            $movies->save();
 
             return Redirect::to('movies')->with('success','New Movie added!');
         }
@@ -71,7 +83,8 @@ class MoviesController extends Controller
      */
     public function show($id)
     {
-        $movies = Movies::find($id);
+        $movies = Movies::where('movies_id','=',$id)->with('genres')->get()->toArray();
+        // dd($movies);;
 
         return View::make('movies.show')->with('movies',$movies);
     }
@@ -84,10 +97,9 @@ class MoviesController extends Controller
      */
     public function edit($id)
     {
+        $genres = Genres::pluck('genre','genres_id');
         $movies = Movies::find($id);
-        return view('movies.edit',compact('movies'));
-        // return View::make('edit_movies',compact('movies'));
-        
+        return view('movies.edit',compact('movies','genres'));
     }
 
     /**
@@ -100,8 +112,15 @@ class MoviesController extends Controller
     public function update(Request $request, $id)
     {
         $movies = Movies::find($id);
-        // dd($customer);
-        $movies->update($request->all());
+        $movies = Movies::where('movies_id',$id)->update([
+            'title'=>$request->title,
+            'year'=>$request->year,
+            'runtime'=>$request->runtime,
+            'plot'=>$request->plot,
+            'genres_id'=>$request->genres_id
+        ]);
+        
+        // $movies->update($request->all());
         return Redirect::to('/movies')->with('success','Movie data updated!');
     }
 
@@ -120,7 +139,7 @@ class MoviesController extends Controller
 
     public function restore($id) 
     {
-        Movies::withTrashed()->where('id',$id)->restore();
+        Movies::withTrashed()->where('movies_id',$id)->restore();
         return  Redirect::route('movies.index')->with('success','Movie restored successfully!');
     }
 }

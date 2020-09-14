@@ -3,7 +3,7 @@
 
     <head>
         <meta charset="UTF-8">
-        <title>Movies</title>
+        <title>Genres</title>
         @extends('layouts.app')
     </head>
 
@@ -13,7 +13,7 @@
 
         <div class="container">
 
-            <a href="{{route('movies.create')}}" class="btn btn-primary a-btn-slide-text">
+            <a href="{{route('genres.create')}}" class="btn btn-primary a-btn-slide-text">
                     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                     <span><strong>ADD</strong></span>            
             </a>
@@ -29,29 +29,24 @@
                 <table class="table table-striped table-hover">
                     <thead>
                         <tr>    
-                        <th>Movies ID</th>
-                        <th>Title</th>
+                        <th>Genre ID</th>
+                        <th>Genre</th>
                         <th>Edit</th>
                         <th>Delete</th>
-                        <th>Restore</th>
                         </tr>
                     </thead>
 
                     <tbody>
-                        @foreach($movies as $movie)
+                        @foreach($genres as $genre)
                             <tr>
-                                <td>{{$movie->movies_id}}</td>
-                                <td><a href="{{route('movies.show',$movie->movies_id)}}">{{$movie->title}}</a></td>
-                                <td align="left"><a href="{{ route('movies.edit',$movie->movies_id) }}"> <i class="fa fa-pencil-square-o" aria-hidden="true" style="font-size:24px" ></a></i></td>
+                                <td>{{$genre->genres_id}}</td>
+                                <td><a href="{{route('genres.show',$genre->genres_id)}}">{{$genre->genre}}</a></td>
+                                <td align="left"><a href="{{ route('genres.edit',$genre->genres_id) }}"> <i class="fa fa-pencil-square-o" aria-hidden="true" style="font-size:24px" ></a></i></td>
                                 <td align="left">
-                                    {!! Form::open(array('route' => array('movies.destroy', $movie->movies_id),'method'=>'DELETE')) !!}
+                                    {!! Form::open(array('route' => array('genres.destroy', $genre->genres_id),'method'=>'DELETE')) !!}
                                         <button><i class="fa fa-trash-o" style="font-size:24px; color:red" ></i></button>
                                     {!! Form::close() !!}
                                 </td>
-
-                                <td align="left"><a href="{{ route('movies.restore',$movie->movies_id) }}" ><i class="fa fa-undo" style="font-size:24px; color:green" ></i></a></td>
-                                </tr> 
-                                {{-- @endforeach --}}
                                     
                             </tr>
 
@@ -64,8 +59,7 @@
             </div>
 
             {{-- PAGINATION --}}
-            <div>{{$movies->links()}}</div>
-            {{-- <div>{!! $movies->render() !!}</div> --}}
+            <div>{{$genres->links()}}</div>
 
         </div>
 

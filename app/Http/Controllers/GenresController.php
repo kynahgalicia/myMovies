@@ -5,11 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
-use App\Actors;
+use App\Genres;
 use Illuminate\Support\Facades\Validator;
 
-
-class ActorsController extends Controller
+class GenresController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,10 +17,8 @@ class ActorsController extends Controller
      */
     public function index()
     {
-        $actors = Actors::orderBy('actors_id','ASC')->withTrashed()->paginate(10);
-        // $actors = Actors::all();
-        // dd($actors);
-        return View::make('actors.index',compact('actors'));
+        $genres = Genres::orderBy('genres_id','ASC')->paginate(10);
+        return View::make('genres.index',compact('genres'));
     }
 
     /**
@@ -31,7 +28,7 @@ class ActorsController extends Controller
      */
     public function create()
     {
-        return View::make('actors.create');
+        return View::make('genres.create');
     }
 
     /**
@@ -42,14 +39,17 @@ class ActorsController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
-        $rules = ['name' =>'required|string|min:1','birthday'=>'date|required','notes'=>'required|string|min:1|max:100'];
+        $rules = [
+            'genre' =>'required|string',
+        ];
+
         $formData = $request->all();
         $validator = Validator::make($formData, $rules);
 
-        if ($validator->passes()) {
-            Actors::create($request->all());
-            return Redirect::to('actors')->with('success','New Actor Record added!');
+        if($validator->passes()){
+            Genres::create($formData);
+
+            return Redirect::to('genres')->with('success','New Genre added!');
         }
         return redirect()->back()->withInput()->withErrors($validator);
     }
@@ -62,9 +62,9 @@ class ActorsController extends Controller
      */
     public function show($id)
     {
-        $actors = Actors::find($id);
+        $genres = Genres::find($id);
 
-        return View::make('actors.show')->with('actors',$actors);
+        return View::make('genres.show')->with('genres',$genres);
     }
 
     /**
@@ -75,8 +75,8 @@ class ActorsController extends Controller
      */
     public function edit($id)
     {
-        $actors = Actors::find($id);
-        return view('actors.edit',compact('actors'));
+        $genres = Genres::find($id);
+        return view('genres.edit',compact('genres'));
     }
 
     /**
@@ -88,10 +88,9 @@ class ActorsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $actors = Actors::find($id);
-        // dd($customer);
-        $actors->update($request->all());
-        return Redirect::to('/actors')->with('success','Actor Data Updated!');
+        $genres = Genres::find($id);
+        $genres->update($request->all());
+        return Redirect::to('/genres')->with('success','Genre data updated!');
     }
 
     /**
@@ -102,14 +101,8 @@ class ActorsController extends Controller
      */
     public function destroy($id)
     {
-        $actors = Actors::findOrFail($id);
-        $actors->delete();
-        return Redirect::to('/actors')->with('success','Actor Data Deleted!');
-    }
-
-    public function restore($id)
-    {
-        Actors::withTrashed()->where('id',$id)->restore();
-        return  Redirect::route('actors.index')->with('success','Actor restored successfully!');
+        $genres = Genres::findOrFail($id);
+        $genres->delete();
+        return Redirect::to('/genres')->with('success','Genre data deleted!');
     }
 }

@@ -39,16 +39,16 @@
                     <tbody>
                         @foreach($actors as $actor)
                             <tr>
-                                <td>{{$actor->id}}</td>
-                                <td><a href="{{route('actors.show',$actor->id)}}">{{$actor->name}}</a></td>
-                                <td align=""><a href="{{ route('actors.edit',$actor->id) }}"><i class="fa fa-pencil-square-o" aria-hidden="true" style="font-size:24px" ></a></i></td>
+                                <td>{{$actor->actors_id}}</td>
+                                <td><a href="{{route('actors.show',$actor->actors_id)}}">{{$actor->name}}</a></td>
+                                <td align=""><a href="{{ route('actors.edit',$actor->actors_id) }}"><i class="fa fa-pencil-square-o" aria-hidden="true" style="font-size:24px" ></a></i></td>
                                 {{-- <td align=""><a href="{{ route('actors.destroy',$actor->id) }}"><i class="fa fa-trash-o" style="font-size:24px; color:red" ></a></i></td> --}}
                                 <td align="">
-                                    {!! Form::open(array('route' => array('actors.destroy', $actor->id),'method'=>'DELETE')) !!}
+                                    {!! Form::open(array('route' => array('actors.destroy', $actor->actors_id),'method'=>'DELETE')) !!}
                                         <button><i class="fa fa-trash-o" style="font-size:24px; color:red" ></i></button>
                                     {!! Form::close() !!}
                                 </td>
-                                <td align="left"><a href="{{ route('actors.restore',$actor->id) }}" ><i class="fa fa-undo" style="font-size:24px; color:green" ></i></a></td>
+                                <td align="left"><a href="{{ route('actors.restore',$actor->actors_id) }}" ><i class="fa fa-undo" style="font-size:24px; color:green" ></i></a></td>
                             </tr>
                         @endforeach
 

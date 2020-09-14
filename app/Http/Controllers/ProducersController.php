@@ -5,11 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
-use App\Actors;
+use App\Producers;
 use Illuminate\Support\Facades\Validator;
 
-
-class ActorsController extends Controller
+class ProducersController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,10 +17,8 @@ class ActorsController extends Controller
      */
     public function index()
     {
-        $actors = Actors::orderBy('actors_id','ASC')->withTrashed()->paginate(10);
-        // $actors = Actors::all();
-        // dd($actors);
-        return View::make('actors.index',compact('actors'));
+        $producers = Producers::orderBy('producers_id','ASC')->paginate(10);
+        return View::make('producers.index',compact('producers'));
     }
 
     /**
@@ -31,7 +28,7 @@ class ActorsController extends Controller
      */
     public function create()
     {
-        return View::make('actors.create');
+        return View::make('producers.create');
     }
 
     /**
@@ -42,14 +39,19 @@ class ActorsController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
-        $rules = ['name' =>'required|string|min:1','birthday'=>'date|required','notes'=>'required|string|min:1|max:100'];
+        $rules = [
+            'name' =>'required|string',
+            'birthday'=>'required|date',
+            'notes'=>'required|string|min:1|max:100'
+        ];
+
         $formData = $request->all();
         $validator = Validator::make($formData, $rules);
 
-        if ($validator->passes()) {
-            Actors::create($request->all());
-            return Redirect::to('actors')->with('success','New Actor Record added!');
+        if($validator->passes()){
+            Producers::create($request->all());
+
+            return Redirect::to('producers')->with('success','New Producer added!');
         }
         return redirect()->back()->withInput()->withErrors($validator);
     }
@@ -62,9 +64,9 @@ class ActorsController extends Controller
      */
     public function show($id)
     {
-        $actors = Actors::find($id);
+        $producers = Producers::find($id);
 
-        return View::make('actors.show')->with('actors',$actors);
+        return View::make('producers.show')->with('producers',$producers);
     }
 
     /**
@@ -75,8 +77,8 @@ class ActorsController extends Controller
      */
     public function edit($id)
     {
-        $actors = Actors::find($id);
-        return view('actors.edit',compact('actors'));
+        $producers = Producers::find($id);
+        return view('producers.edit',compact('producers'));
     }
 
     /**
@@ -88,10 +90,9 @@ class ActorsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $actors = Actors::find($id);
-        // dd($customer);
-        $actors->update($request->all());
-        return Redirect::to('/actors')->with('success','Actor Data Updated!');
+        $producers = Producers::find($id);
+        $producers->update($request->all());
+        return Redirect::to('/producers')->with('success','Producer data updated!');
     }
 
     /**
@@ -102,14 +103,8 @@ class ActorsController extends Controller
      */
     public function destroy($id)
     {
-        $actors = Actors::findOrFail($id);
-        $actors->delete();
-        return Redirect::to('/actors')->with('success','Actor Data Deleted!');
-    }
-
-    public function restore($id)
-    {
-        Actors::withTrashed()->where('id',$id)->restore();
-        return  Redirect::route('actors.index')->with('success','Actor restored successfully!');
+        $producers = Producers::findOrFail($id);
+        $producers->delete();
+        return Redirect::to('/producers')->with('success','Producers data deleted!');
     }
 }
