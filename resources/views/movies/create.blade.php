@@ -53,6 +53,11 @@
             <label for="genres_id">Genres:</label>
             {!! Form::select('genres_id',$genres, null,['class' => 'form-control']) !!}
         </div>
+
+        <div class="form-group">
+            <label for="producers_id">Producers:</label>
+            {!! Form::select('producers_id',$producers, null,['class' => 'form-control']) !!}
+        </div>
     
     <button type="submit" class="btn btn-primary">Save</button>
     <a href="{{url()->previous()}}" class="btn btn-default" role="button">Cancel</a>

@@ -12,11 +12,14 @@
             <p>
                 <strong align="left">Year:</strong> {{ $movies[0]['year'] }}<br>
                 <strong align="left">Runtime:</strong> {{ $movies[0]['runtime'] }}<br>
-                <strong align="left">Plot:</strong> {{ $movies[0]['plot'] }}<br>
-                <strong align="left">Genre:</strong> {{ $movies[0]['genres']['genre'] }}
+                <strong align="left">Plot:</strong> {{ $movies[0]['plot'] }}<br><br>
+                <strong align="left">Genre:</strong> {{ $movies[0]['genres']['genre'] }}<br>
+                <strong align="left">Producer:</strong> {{ $movies[0]['producers']['name'] }}
             </p>
 
-            <a href="{{url()->previous()}}" class="btn btn-primary" role="button">Back</a>
+            {{-- add an add button for actor and role --}}
+
+            <a href="{{url()->previous()}}" class="btn btn-primary" role="button" align="right">Back</a>
 
         </div>
 

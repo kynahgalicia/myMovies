@@ -46,6 +46,8 @@ class CreateTablesRelationship extends Migration
             $table->longText('plot');
             $table->bigInteger('genres_id')->unsigned();
             $table->foreign('genres_id')->references('genres_id')->on('genres')->onDelete('cascade')->onUpdate('cascade');
+            $table->bigInteger('producers_id')->unsigned();
+            $table->foreign('producers_id')->references('producers_id')->on('producers')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -58,12 +60,6 @@ class CreateTablesRelationship extends Migration
             $table->bigInteger('users_id')->unsigned();
             $table->foreign('users_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
-        });
-        Schema::create('movie_producers', function (Blueprint $table) {
-            $table->bigInteger('movies_id')->unsigned();
-            $table->foreign('movies_id')->references('movies_id')->on('movies')->onDelete('cascade')->onUpdate('cascade');
-            $table->bigInteger('producers_id')->unsigned();
-            $table->foreign('producers_id')->references('producers_id')->on('producers')->onDelete('cascade')->onUpdate('cascade');
         });
         Schema::create('actor_movie_roles', function (Blueprint $table) {
             $table->bigInteger('actors_id')->unsigned();
@@ -88,7 +84,6 @@ class CreateTablesRelationship extends Migration
         Schema::drop('genres');
         Schema::drop('roles');
         Schema::drop('ratings');
-        Schema::drop('movie_producers');
         Schema::drop('actor_movie_roles');
     }
 }

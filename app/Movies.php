@@ -14,4 +14,9 @@ class Movies extends Model
     public function genres(){
         return $this->belongsTo('App\Genres','genres_id');
     }
+
+    public function producers(){
+        return $this->belongsTo('App\Producers','producers_id');
+    }
+
 }

@@ -43,7 +43,11 @@ class ActorsController extends Controller
     public function store(Request $request)
     {
         // dd($request->all());
-        $rules = ['name' =>'required|string|min:1','birthday'=>'date|required','notes'=>'required|string|min:1|max:100'];
+        $rules = [
+            'name' =>'required|string|min:1',
+            'birthday'=>'date|required',
+            'notes'=>'required|string|min:1|max:1000'
+        ];
         $formData = $request->all();
         $validator = Validator::make($formData, $rules);
 

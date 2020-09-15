@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
 use App\Movies;
 use App\Genres;
+use App\Producers;
 use Illuminate\Support\Facades\Validator;
 
 class MoviesController extends Controller
@@ -32,7 +33,8 @@ class MoviesController extends Controller
     public function create()
     {
         $genres = Genres::pluck('genre','genres_id');
-        return View::make('movies.create', compact('genres'));
+        $producers = Producers::pluck('name','producers_id');
+        return View::make('movies.create', compact('genres','producers'));
     }
 
     /**
@@ -48,7 +50,8 @@ class MoviesController extends Controller
             'year' => 'integer|min:' . (date("Y") - 100) . '|max:' . date("Y"),
             'plot'=>'string|min:1|max:1000',
             'runtime'=>'required|integer|min:100|max:200',
-            'genres_id' => 'integer'
+            'genres_id' => 'integer',
+            'producers_id' => 'integer'
         ];
 
         $formData = $request->all();
@@ -59,7 +62,8 @@ class MoviesController extends Controller
             // Movies::create($formData);
 
             $genre = Genres::find($formData['genres_id']);
-            // dd($genre->genres_id);
+            $producer = Producers::find($formData['producers_id']);
+            // dd($producer->producers_id);
             
             $movies = new Movies();
             $movies->title = $formData['title'];
@@ -67,6 +71,7 @@ class MoviesController extends Controller
             $movies->runtime = $formData['runtime'];
             $movies->year = $formData['year'];
             $movies->genres()->associate($genre);
+            $movies->producers()->associate($producer);
             $movies->save();
 
             return Redirect::to('movies')->with('success','New Movie added!');
@@ -83,7 +88,7 @@ class MoviesController extends Controller
      */
     public function show($id)
     {
-        $movies = Movies::where('movies_id','=',$id)->with('genres')->get()->toArray();
+        $movies = Movies::where('movies_id','=',$id)->with('genres','producers')->get()->toArray();
         // dd($movies);;
 
         return View::make('movies.show')->with('movies',$movies);
@@ -98,8 +103,9 @@ class MoviesController extends Controller
     public function edit($id)
     {
         $genres = Genres::pluck('genre','genres_id');
+        $producers = Producers::pluck('name','producers_id');
         $movies = Movies::find($id);
-        return view('movies.edit',compact('movies','genres'));
+        return view('movies.edit',compact('movies','genres','producers'));
     }
 
     /**
@@ -117,7 +123,8 @@ class MoviesController extends Controller
             'year'=>$request->year,
             'runtime'=>$request->runtime,
             'plot'=>$request->plot,
-            'genres_id'=>$request->genres_id
+            'genres_id'=>$request->genres_id,
+            'producers_id'=>$request->producers_id
         ]);
         
         // $movies->update($request->all());
