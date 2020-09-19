@@ -9,6 +9,7 @@
 
         <div class="jumbotron text-left">
             <h2>{{ $movies[0]['title'] }}</h2>
+            <img src="{{url('/storage/images/movies/'.$movies[0]['images'])}}" width="100px">
             <p>
                 <strong align="left">Year:</strong> {{ $movies[0]['year'] }}<br>
                 <strong align="left">Runtime:</strong> {{ $movies[0]['runtime'] }}<br>

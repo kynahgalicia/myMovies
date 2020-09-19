@@ -18,6 +18,7 @@ class CreateTablesRelationship extends Migration
             $table->string('name');
             $table->date('birthday');
             $table->longText('notes');
+            $table->string('images');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -48,6 +49,7 @@ class CreateTablesRelationship extends Migration
             $table->foreign('genres_id')->references('genres_id')->on('genres')->onDelete('cascade')->onUpdate('cascade');
             $table->bigInteger('producers_id')->unsigned();
             $table->foreign('producers_id')->references('producers_id')->on('producers')->onDelete('cascade')->onUpdate('cascade');
+            $table->string('images');
             $table->timestamps();
             $table->softDeletes();
         });

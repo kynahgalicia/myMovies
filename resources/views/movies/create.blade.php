@@ -6,7 +6,7 @@
     
     <h2>Create new movie</h2>
     
-    <form method="post" action="{{route('movies.store')}}" >
+    <form method="post" action="{{route('movies.store')}}" enctype="multipart/form-data" >
         
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
         
@@ -16,6 +16,8 @@
             @endforeach
         </ul> --}}
         {{-- {{dd($errors)}}; --}}
+        Upload an image:<br>
+        <input type="file" name="images" /><br><br>
         
         <div class="form-group">
             <label for="title" class="control-label">Title</label>

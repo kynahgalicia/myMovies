@@ -9,6 +9,7 @@
 
         <div class="jumbotron text-left">
             <h2>{{ $actors->name }}</h2>
+            <img src="{{url('/storage/images/actors/'.$actors->images)}}" width="100px">
             <p>
                 {{-- <strong>Title:</strong> {{ $movies->title }}<br> --}}
                 <strong align="left">Birthday:</strong> {{ $actors->birthday }}<br>

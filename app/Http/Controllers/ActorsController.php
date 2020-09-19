@@ -48,11 +48,16 @@ class ActorsController extends Controller
             'birthday'=>'date|required',
             'notes'=>'required|string|min:1|max:1000'
         ];
+
         $formData = $request->all();
+        $file = $formData['images']->getClientOriginalName();
+        $formData['images'] = $file;
+
         $validator = Validator::make($formData, $rules);
 
         if ($validator->passes()) {
-            Actors::create($request->all());
+            Actors::create($formData);
+            $request->file('images')->move(storage_path().'/app/public/images/actors', $request->file('images')->getClientOriginalName());
             return Redirect::to('actors')->with('success','New Actor Record added!');
         }
         return redirect()->back()->withInput()->withErrors($validator);
