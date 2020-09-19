@@ -12,10 +12,14 @@
             <p>
                 {{-- <strong>Title:</strong> {{ $movies->title }}<br> --}}
                 <strong align="left">Birthday:</strong> {{ $actors->birthday }}<br>
-                <strong align="left">Notes:</strong> {{ $actors->notes }}
+                <strong align="left">Notes:</strong> {{ $actors->notes }}<br><br>
+                <strong align="left">Movies Starred:</strong>
+                @foreach ($amr as $amrs)
+                    <li><a href="{{route('movies.show',$amrs['movies']['movies_id'])}}">{{$amrs['movies']['title']}}</a> as <a href="{{route('roles.show',$amrs['roles']['roles_id'])}}">{{$amrs['roles']['roles']}}</a></li> 
+                @endforeach
             </p>
 
-            <a href="{{url()->previous()}}" class="btn btn-primary" role="button">Back</a>
+            <a href="{{route('actors.index')}}" class="btn btn-primary" role="button">Back</a>
 
         </div>
 

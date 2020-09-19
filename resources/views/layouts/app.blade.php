@@ -33,10 +33,6 @@
                     <th>myMovies</th>
                 </a>
 
-                {{-- <a class="navbar-brand" href="{{ url('/movies') }}">
-                    <th>Movies</th>
-                </a> --}}
-
                 <a class="navbar-brand" href="{{ url('/actors') }}">
                     <th>Actors</th>
                 </a>
@@ -51,6 +47,10 @@
 
                 <a class="navbar-brand" href="{{ url('/roles') }}">
                     <th>Roles</th>
+                </a>
+
+                <a class="navbar-brand" href="{{ url('/ratings') }}">
+                    <th>Ratings</th>
                 </a>
 
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">

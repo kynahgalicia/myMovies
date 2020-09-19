@@ -88,10 +88,12 @@ class MoviesController extends Controller
      */
     public function show($id)
     {
-        $movies = Movies::where('movies_id','=',$id)->with('genres','producers')->get()->toArray();
-        // dd($movies);;
+        $movies = Movies::find($id)->with(['genres','producers'])->get();
+        // dd($movies);
+        $amr = Movies::find($id)->actormovieroles()->with(['actors','roles'])->get()->toArray();
+        // dd($amr);
 
-        return View::make('movies.show')->with('movies',$movies);
+        return View::make('movies.show',compact('movies','amr'));
     }
 
     /**

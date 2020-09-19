@@ -19,4 +19,8 @@ class Movies extends Model
         return $this->belongsTo('App\Producers','producers_id');
     }
 
+    public function actormovieroles(){
+        return $this->hasMany('App\ActorMovieRoles','movies_id');
+    }
+
 }

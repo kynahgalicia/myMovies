@@ -13,7 +13,7 @@
                 <strong align="left">Notes:</strong> {{ $producers->notes }}
             </p>
 
-            <a href="{{url()->previous()}}" class="btn btn-primary" role="button">Back</a>
+            <a href="{{route('producers.index')}}" class="btn btn-primary" role="button">Back</a>
 
         </div>
 

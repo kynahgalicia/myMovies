@@ -5,10 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
+use App\Movies;
+use App\Actors;
 use App\Roles;
+use App\ActorMovieRoles;
 use Illuminate\Support\Facades\Validator;
 
-class RolesController extends Controller
+class ActorMovieRolesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,8 +20,7 @@ class RolesController extends Controller
      */
     public function index()
     {
-        $roles = Roles::orderBy('roles_id','ASC')->paginate(10);
-        return View::make('roles.index',compact('roles'));
+        //
     }
 
     /**
@@ -28,7 +30,11 @@ class RolesController extends Controller
      */
     public function create()
     {
-        return View::make('roles.create');
+        $actors = Actors::pluck('name','actors_id');
+        $roles = Roles::pluck('roles','roles_id');
+        $movies = Movies::pluck('title','movies_id');
+        // dd($actors);
+        return View::make('actormovieroles.create', compact('actors','roles','movies'));
     }
 
     /**
@@ -39,19 +45,21 @@ class RolesController extends Controller
      */
     public function store(Request $request)
     {
-        $rules = [
-            'roles' =>'required|string',
-        ];
-
         $formData = $request->all();
-        $validator = Validator::make($formData, $rules);
+        $actor = Actors::find($formData['actors_id']);
+        $role = Roles::find($formData['roles_id']);
+        $movie = Movies::find($formData['movies_id']);
 
-        if($validator->passes()){
-            Roles::create($request->all());
+        $amr = new ActorMovieRoles();
+        $amr->movies_id = $formData['movies_id'];
+        $amr->actors_id = $formData['actors_id'];
+        $amr->roles_id = $formData['roles_id'];
+        $amr->movies()->associate($movie);
+        $amr->actors()->associate($actor);
+        $amr->roles()->associate($role);
+        $amr->save();
 
-            return Redirect::to('roles')->with('success','New Role added!');
-        }
-        return redirect()->back()->withInput()->withErrors($validator);
+        return Redirect::to('movies')->with('success','New Cast added!');
     }
 
     /**
@@ -62,11 +70,7 @@ class RolesController extends Controller
      */
     public function show($id)
     {
-        $roles = Roles::find($id);
-        $amr = Roles::find($id)->actormovieroles()->with(['movies','actors'])->get()->toArray();
-        // dd($amr);
-
-        return View::make('roles.show',compact('roles','amr'));
+        //
     }
 
     /**
@@ -77,8 +81,7 @@ class RolesController extends Controller
      */
     public function edit($id)
     {
-        $roles = Roles::find($id);
-        return view('roles.edit',compact('roles'));
+        //
     }
 
     /**
@@ -90,9 +93,7 @@ class RolesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $roles = Roles::find($id);
-        $roles->update($request->all());
-        return Redirect::to('/roles')->with('success','Role data updated!');
+        //
     }
 
     /**
@@ -103,8 +104,6 @@ class RolesController extends Controller
      */
     public function destroy($id)
     {
-        $roles = Roles::findOrFail($id);
-        $roles->delete();
-        return Redirect::to('/roles')->with('success','Role data deleted!');
+        //
     }
 }

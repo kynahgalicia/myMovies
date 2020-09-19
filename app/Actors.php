@@ -10,4 +10,8 @@ class Actors extends Model
     protected $fillable = ['name','birthday','notes'];
     protected $primaryKey = 'actors_id';
     use SoftDeletes;
+
+    public function actormovieroles(){
+        return $this->hasMany('App\ActorMovieRoles','actors_id');
+    }
 }

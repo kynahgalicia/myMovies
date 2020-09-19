@@ -12,7 +12,7 @@
                 <strong align="left">Genre Name:</strong> {{ $genres->genre }}
             </p>
 
-            <a href="{{url()->previous()}}" class="btn btn-primary" role="button">Back</a>
+            <a href="{{route('genres.index')}}" class="btn btn-primary" role="button">Back</a>
 
         </div>
 

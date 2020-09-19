@@ -9,10 +9,14 @@
         <div class="jumbotron text-left">
             {{-- <h2>{{ $genres->genre }}</h2> --}}
             <p>
-                <strong align="left">Name:</strong> {{ $roles->roles }}
+                <strong align="left">Name:</strong> {{ $roles->roles }}<br>
+                {{-- <strong align="left">Movies:</strong> --}}
+                @foreach ($amr as $amrs)
+                    <li>Played by: <a href="{{route('actors.show',$amrs['actors']['actors_id'])}}">{{$amrs['actors']['name']}}</a> in <a href="{{route('movies.show',$amrs['movies']['movies_id'])}}">{{$amrs['movies']['title']}}</a></li> 
+                @endforeach
             </p>
 
-            <a href="{{url()->previous()}}" class="btn btn-primary" role="button">Back</a>
+            <a href="{{route('roles.index')}}" class="btn btn-primary" role="button">Back</a>
 
         </div>
 
