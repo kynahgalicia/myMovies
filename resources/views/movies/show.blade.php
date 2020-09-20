@@ -9,7 +9,7 @@
 
         <div class="jumbotron text-left">
             <h2>{{ $movies[0]['title'] }}</h2>
-            <img src="{{url('/storage/images/movies/'.$movies[0]['images'])}}" width="100px">
+            <img src="{{url('/storage/images/movies/'.$movies[0]['images'])}}" width="300px">
             <p>
                 <strong align="left">Year:</strong> {{ $movies[0]['year'] }}<br>
                 <strong align="left">Runtime:</strong> {{ $movies[0]['runtime'] }}<br>
@@ -26,6 +26,11 @@
             <a href="{{route('actormovieroles.create')}}" class="btn btn-primary a-btn-slide-text" >
                 <span class="glyphicon glyphicon-plus" aria-hidden="true" ></span>
                 <span><strong>Add Cast</strong></span>            
+            </a><br><br>
+
+            <a href="{{route('ratings.create')}}" class="btn btn-primary a-btn-slide-text" >
+                <span class="glyphicon glyphicon-plus" aria-hidden="true" ></span>
+                <span><strong>Rate this movie</strong></span>            
             </a><br><br>
 
             <a href="{{route('movies.index')}}" class="btn-group-xs" role="button" style="color: gray">Back</a>

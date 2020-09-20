@@ -73,7 +73,7 @@ class ActorsController extends Controller
     {
         $actors = Actors::find($id);
         $amr = Actors::find($id)->actormovieroles()->with(['movies','roles'])->get()->toArray();
-        // dd($amr);
+        dd($actors);
 
         return View::make('actors.show',compact('actors','amr'));
     }

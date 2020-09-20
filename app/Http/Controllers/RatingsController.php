@@ -2,7 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
+use App\Movies;
+use App\User;
+use App\Ratings;
+use Illuminate\Support\Facades\Validator;
 
 class RatingsController extends Controller
 {
@@ -13,7 +19,9 @@ class RatingsController extends Controller
      */
     public function index()
     {
-        //
+        $ratings = Ratings::orderBy('ratings_id','ASC')->paginate(10);
+
+        return View::make('ratings.index',compact('ratings'));
     }
 
     /**
@@ -23,7 +31,9 @@ class RatingsController extends Controller
      */
     public function create()
     {
-        //
+        $movies = Movies::pluck('title','movies_id');
+        $users = Auth::user()->id;
+        return View::make('movies.create', compact('movies','users'));
     }
 
     /**
@@ -34,7 +44,28 @@ class RatingsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $rules = [
+            'rating' =>'required|string',
+            'comment' => 'required|string|max:500',
+            'genres_id' => 'integer',
+            'producers_id' => 'integer'
+        ];
+
+        $formData = $request->all();
+
+        $validator = Validator::make($formData, $rules);
+
+        if($validator->passes()){
+            $genre = Genres::find($formData['genres_id']);
+            $producer = Producers::find($formData['producers_id']);
+            // dd($producer->producers_id);
+            
+            $movies = new Movies();
+            $movies->title = $formData['title'];
+            $ratings->save();
+
+            return Redirect::to('movies.index')->with('success','New Rating added!');
+        }
     }
 
     /**

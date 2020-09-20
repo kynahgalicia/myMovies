@@ -19,7 +19,6 @@ class MoviesController extends Controller
      */
     public function index()
     {
-        //----pagination-----
         $movies = Movies::orderBy('movies_id','ASC')->withTrashed()->paginate(10);
 
         return View::make('movies.index',compact('movies'));
@@ -51,13 +50,11 @@ class MoviesController extends Controller
             'plot'=>'string|min:1|max:1000',
             'runtime'=>'required|integer|min:100|max:200',
             'images'=>'required',
-            'genres_id' => 'integer',
-            'producers_id' => 'integer'
+            'genres_id' => 'required|integer',
+            'producers_id' => 'required|integer'
         ];
 
         $formData = $request->all();
-        $file = $formData['images']->getClientOriginalName();
-        $formData['images'] = $file;
 
         $validator = Validator::make($formData, $rules);
 
@@ -72,7 +69,8 @@ class MoviesController extends Controller
             $movies->plot = $formData['plot'];
             $movies->runtime = $formData['runtime'];
             $movies->year = $formData['year'];
-            $movies->images = $request->file('images')->move(storage_path().'/app/public/images/movies', $request->file('images')->getClientOriginalName());
+            $movies->images = $request->file('images')->getClientOriginalName();
+            $request->file('images')->move(storage_path().'/app/public/images/movies/', $request->file('images')->getClientOriginalName());
             $movies->genres()->associate($genre);
             $movies->producers()->associate($producer);
             $movies->save();
@@ -91,7 +89,7 @@ class MoviesController extends Controller
      */
     public function show($id)
     {
-        $movies = Movies::find($id)->with(['genres','producers'])->get();
+        $movies = Movies::where('movies_id','=',$id)->with(['genres','producers'])->get();
         // dd($movies);
         $amr = Movies::find($id)->actormovieroles()->with(['actors','roles'])->get()->toArray();
         // dd($amr);
