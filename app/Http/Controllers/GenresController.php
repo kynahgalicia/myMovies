@@ -40,7 +40,7 @@ class GenresController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'genre' =>'required|string',
+            'genre' =>'required|profanity|string',
         ];
 
         $formData = $request->all();

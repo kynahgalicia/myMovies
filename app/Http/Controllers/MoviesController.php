@@ -8,7 +8,11 @@ use Illuminate\Http\Request;
 use App\Movies;
 use App\Genres;
 use App\Producers;
+use Auth;
+use App\Ratings;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
+
 
 class MoviesController extends Controller
 {
@@ -46,8 +50,8 @@ class MoviesController extends Controller
     {
         $rules = [
             'title' =>'required|string',
-            'year' => 'integer|min:' . (date("Y") - 100) . '|max:' . date("Y"),
-            'plot'=>'string|min:1|max:1000',
+            'year' => 'required|integer|min:' . (date("Y") - 100) . '|max:' . date("Y"),
+            'plot'=>'required|profanity|string|min:1|max:1000',
             'runtime'=>'required|integer|min:100|max:200',
             'images'=>'required',
             'genres_id' => 'required|integer',
@@ -89,13 +93,22 @@ class MoviesController extends Controller
      */
     public function show($id)
     {
+        // $temp = Movies::where('movies_id','=',$id);
+
         $movies = Movies::where('movies_id','=',$id)->with(['genres','producers'])->get();
         // dd($movies);
         $amr = Movies::find($id)->actormovieroles()->with(['actors','roles'])->get()->toArray();
         // dd($amr);
+        $ratings = Movies::find($id)->ratings()->with('users')->get()->toArray();
+        // dd($ratings);
+        $name = Ratings::where([['movie_id', '=', $id],['user_id', '=', Auth::user()->id]])->get()->isEmpty();
 
-        return View::make('movies.show',compact('movies','amr'));
+        return View::make('movies.show',compact('movies','amr','ratings','name'));
     }
+
+    // public function if_exist($ratings){
+        
+    // }
 
     /**
      * Show the form for editing the specified resource.

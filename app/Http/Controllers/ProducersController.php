@@ -40,9 +40,9 @@ class ProducersController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'name' =>'required|string',
+            'name' =>'required|profanity|string',
             'birthday'=>'required|date',
-            'notes'=>'required|string|min:1|max:100'
+            'notes'=>'required|profanity|string|min:1|max:100'
         ];
 
         $formData = $request->all();

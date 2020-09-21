@@ -11,8 +11,9 @@
             <p>
                 <strong align="left">Name:</strong> {{ $roles->roles }}<br>
                 {{-- <strong align="left">Movies:</strong> --}}
+                <strong align="left">Played by:</strong>
                 @foreach ($amr as $amrs)
-                    <li>Played by: <a href="{{route('actors.show',$amrs['actors']['actors_id'])}}">{{$amrs['actors']['name']}}</a> in <a href="{{route('movies.show',$amrs['movies']['movies_id'])}}">{{$amrs['movies']['title']}}</a></li> 
+                    <li> <a href="{{route('actors.show',$amrs['actors']['actors_id'])}}">{{$amrs['actors']['name']}}</a> in <a href="{{route('movies.show',$amrs['movies']['movies_id'])}}">{{$amrs['movies']['title']}}</a></li> 
                 @endforeach
             </p>
 

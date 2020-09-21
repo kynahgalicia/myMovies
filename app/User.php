@@ -38,6 +38,6 @@ class User extends Authenticatable
     ];
 
     public function ratings(){
-        return $this->hasMany('App\Movies');
+        return $this->hasMany('App\Ratings','user_id');
     }
 }

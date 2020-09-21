@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Movies;
 use App\User;
 use App\Ratings;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class RatingsController extends Controller
 {
@@ -19,7 +21,8 @@ class RatingsController extends Controller
      */
     public function index()
     {
-        $ratings = Ratings::orderBy('ratings_id','ASC')->paginate(10);
+        $ratings = Ratings::orderBy('ratings_id','ASC')->with('movies','users')->paginate(10);
+        // dd($ratings);
 
         return View::make('ratings.index',compact('ratings'));
     }
@@ -31,9 +34,11 @@ class RatingsController extends Controller
      */
     public function create()
     {
-        $movies = Movies::pluck('title','movies_id');
-        $users = Auth::user()->id;
-        return View::make('movies.create', compact('movies','users'));
+        $movies = Movies::pluck('title','movies_id'); 
+        // dd($movies);
+        // $users = Auth::user()->id;
+        
+        return View::make('ratings.create', compact('movies'));
     }
 
     /**
@@ -45,27 +50,29 @@ class RatingsController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'rating' =>'required|string',
-            'comment' => 'required|string|max:500',
-            'genres_id' => 'integer',
-            'producers_id' => 'integer'
+            'rating' =>'required|string|min:0|max:10',
+            'comment' => 'required|profanity|string|max:500',
+            'movie_id' => 'integer',
+            'user_id' => 'integer'
         ];
 
         $formData = $request->all();
-
+        // dd($formData);
         $validator = Validator::make($formData, $rules);
 
         if($validator->passes()){
-            $genre = Genres::find($formData['genres_id']);
-            $producer = Producers::find($formData['producers_id']);
-            // dd($producer->producers_id);
             
-            $movies = new Movies();
-            $movies->title = $formData['title'];
+            $ratings = new Ratings;
+            $ratings->rating = $formData['rating'];
+            $ratings->comment = $formData['comment'];
+            $ratings->movie_id = $formData['movie_id'];
+            $ratings->user_id = Auth::user()->id;
+            // dd($ratings);
             $ratings->save();
 
-            return Redirect::to('movies.index')->with('success','New Rating added!');
+            return Redirect::to('movies')->with('success','New Rating added!');
         }
+        return redirect()->back()->withInput()->withErrors($validator);
     }
 
     /**
@@ -87,7 +94,8 @@ class RatingsController extends Controller
      */
     public function edit($id)
     {
-        //
+        $ratings = Ratings::find($id);
+        return view('ratings.edit',compact('ratings'));
     }
 
     /**
@@ -99,7 +107,13 @@ class RatingsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $ratings = Ratings::find($id);
+        $ratings = Ratings::where('ratings_id',$id)->update([
+            'rating'=>$request->rating,
+            'comment'=>$request->comment
+        ]);
+        
+        return Redirect::to('/ratings')->with('success','Rating data updated!');
     }
 
     /**
@@ -110,6 +124,8 @@ class RatingsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $ratings = Ratings::findOrFail($id);
+        $ratings->delete();
+        return Redirect::to('/ratings')->with('success','Rating data deleted!');
     }
 }

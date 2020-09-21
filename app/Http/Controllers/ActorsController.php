@@ -44,9 +44,9 @@ class ActorsController extends Controller
     {
         // dd($request->all());
         $rules = [
-            'name' =>'required|string|min:1',
+            'name' =>'required|profanity|string|min:1',
             'birthday'=>'date|required',
-            'notes'=>'required|string|min:1|max:1000'
+            'notes'=>'required|profanity|string|min:1|max:1000'
         ];
 
         $formData = $request->all();
@@ -73,7 +73,7 @@ class ActorsController extends Controller
     {
         $actors = Actors::find($id);
         $amr = Actors::find($id)->actormovieroles()->with(['movies','roles'])->get()->toArray();
-        dd($actors);
+        // dd($actors);
 
         return View::make('actors.show',compact('actors','amr'));
     }

@@ -10,10 +10,10 @@ class Ratings extends Model
     protected $primaryKey = 'ratings_id';
 
     public function movies(){
-        return $this->belongsto('App\Movies','movies_id');
+        return $this->belongsTo('App\Movies','movie_id');
     }
 
-    public function user(){
-        return $this->belongsTo('App\User','id');
+    public function users(){
+        return $this->belongsTo('App\User','user_id');
     }
 }
