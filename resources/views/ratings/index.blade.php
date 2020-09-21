@@ -29,8 +29,8 @@
                 <table class="table table-striped table-hover">
                     <thead>
                         <tr>    
-                        <th>User</th>
                         <th>Movie Title</th>
+                        <th>User</th>
                         <th>Rating</th>
                         <th>Comment</th>
                         <th>Edit</th>
@@ -41,8 +41,8 @@
                     <tbody>
                         @foreach($ratings as $rating)
                             <tr>
-                                <td>{{$rating->users->name}}</td>
                                 <td>{{$rating->movies->title}}</td>
+                                <td>{{$rating->users->name}}</td>
                                 <td>{{$rating->rating}}</td>
                                 <td>{{$rating->comment}}</td>
                                 <td align="left"><a href="{{ route('ratings.edit',$rating->ratings_id) }}"> <i class="fa fa-pencil-square-o" aria-hidden="true" style="font-size:24px" ></a></i></td>

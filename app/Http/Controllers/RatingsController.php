@@ -21,7 +21,7 @@ class RatingsController extends Controller
      */
     public function index()
     {
-        $ratings = Ratings::orderBy('ratings_id','ASC')->with('movies','users')->paginate(10);
+        $ratings = Ratings::orderBy('movie_id','ASC')->with('movies','users')->paginate(10);
         // dd($ratings);
 
         return View::make('ratings.index',compact('ratings'));
