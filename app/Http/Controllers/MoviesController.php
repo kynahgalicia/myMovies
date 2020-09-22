@@ -99,7 +99,7 @@ class MoviesController extends Controller
         // dd($movies);
         $amr = Movies::find($id)->actormovieroles()->with(['actors','roles'])->get()->toArray();
         // dd($amr);
-        $ratings = Movies::find($id)->ratings()->with('users')->get()->toArray();
+        $ratings = Movies::find($id)->ratings()->with('users')->get();
         // dd($ratings);
         $name = Ratings::where([['movie_id', '=', $id],['user_id', '=', Auth::user()->id]])->get()->isEmpty();
 

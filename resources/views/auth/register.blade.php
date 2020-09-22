@@ -63,11 +63,22 @@
 
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" class="btn btn-primary" name="is_admin" value="0">
                                     {{ __('Register') }}
                                 </button>
                             </div>
                         </div>
+                        
+                        <br>
+
+                        <div class="form-group row mb-0">
+                            <div class="col-md-6 offset-md-4">
+                                <button type="submit" class="btn btn-primary" name="is_admin" value="1">
+                                    {{ __('Register as Admin') }}
+                                </button>
+                            </div>
+                        </div>
+
                     </form>
                 </div>
             </div>
