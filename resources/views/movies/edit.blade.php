@@ -6,12 +6,16 @@
 
     <h2>Edit Movies</h2>
 
-    {!! Form::model($movies,['method'=>'PATCH','route' => ['movies.update',$movies->movies_id]])!!}
+    {!! Form::model($movies,['method'=>'PATCH','route' => ['movies.update',$movies->movies_id], 'files'=>true])!!}
         {{-- {{csrf_field()}}
         {{ method_field('PATCH') }} --}}
 
+    Upload an image:<br>
+    {{Form::file('images')}}
+    {{-- <input type="file" name="images" /><br><br> --}}
+
     <div class="form-group">
-        <label for="title" class="control-label">Title</label>
+        <br><label for="title" class="control-label">Title</label>
         {{ Form::text('title',null,array('class'=>'form-control','id'=>'title')) }}
     </div> 
 
