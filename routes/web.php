@@ -17,6 +17,9 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/', 'HomeController@index')->name('home');
 
+Route::get('contact','ContactFormController@create');
+Route::post('contact','ContactFormController@store');
+
 Route::resource('actors', 'ActorsController');
 Route::resource('movies', 'MoviesController');
 Route::resource('producers', 'ProducersController');
