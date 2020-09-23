@@ -109,7 +109,16 @@ class ActorsController extends Controller
         if(Auth::user()->is_admin){
             $actors = Actors::find($id);
             // dd($customer);
-            $actors->update($request->all());
+            // $actors->update($request->all());
+            $formData = $request->all();
+            $actors->name = $formData['name'];
+            $actors->birthday = $formData['birthday'];
+            $actors->notes = $formData['notes'];
+            if ($request->file('images')) {
+                $actors->images = $request->file('images')->getClientOriginalName();
+                $request->file('images')->move(storage_path().'/app/public/images/actors/', $request->file('images')->getClientOriginalName());
+            }
+            $actors->save();
             return Redirect::to('/actors')->with('success','Actor Data Updated!');
         }
     }

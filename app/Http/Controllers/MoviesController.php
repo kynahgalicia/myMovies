@@ -50,6 +50,7 @@ class MoviesController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->file('images'));
         if(Auth::user()->is_admin){
             $rules = [
                 'title' =>'required|string',
@@ -144,14 +145,23 @@ class MoviesController extends Controller
     {
         if(Auth::user()->is_admin){
             $movies = Movies::find($id);
-            $movies = Movies::where('movies_id',$id)->update([
-                'title'=>$request->title,
-                'year'=>$request->year,
-                'runtime'=>$request->runtime,
-                'plot'=>$request->plot,
-                'genres_id'=>$request->genres_id,
-                'producers_id'=>$request->producers_id
-            ]);
+            $formData = $request->all();
+            $genre = Genres::find($formData['genres_id']);
+            $producer = Producers::find($formData['producers_id']);
+            $movies->title = $formData['title'];
+            $movies->plot = $formData['plot'];
+            $movies->runtime = $formData['runtime'];
+            $movies->year = $formData['year'];
+            $movies->genres()->associate($genre);
+            $movies->producers()->associate($producer);
+            
+            if ($request->file('images')) {
+                $movies->images = $request->file('images')->getClientOriginalName();
+                $request->file('images')->move(storage_path().'/app/public/images/movies/', $request->file('images')->getClientOriginalName());
+            }
+            
+            $movies->save();
+            
             
             // $movies->update($request->all());
             return Redirect::to('/movies')->with('success','Movie data updated!');

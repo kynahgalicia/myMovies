@@ -33,7 +33,7 @@
         <nav class="navbar navbar-expand-md navbar-dark shadow-sm" style="background-color: #2E3047">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/movies') }}">
-                    <img src="{{ asset('images/webicon.png') }}" width="30" height="30" alt="">
+                    <th>myMovies</th>
                 </a>
 
                 <a class="navbar-brand" href="{{ url('/actors') }}">

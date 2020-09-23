@@ -64,7 +64,7 @@
     <button type="submit" class="btn btn-primary">Save</button>
     <a href="{{url()->previous()}}" class="btn btn-default" role="button">Cancel</a>
     
-</div> 
+</div>
 
 </div>
 
