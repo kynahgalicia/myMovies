@@ -6,7 +6,6 @@
 
 <div class="container">
 
-    {{-- <h1>Showing {{ $movies->title }}</h1> --}}
     <h1>Movies</h1>
 
         <div class="jumbotron text-left" style="background-color: #3C3F58">
@@ -33,8 +32,6 @@
                     </a><br><br>
                 @endif
 
-            {{-- @endauth --}}
-
                 @if ($name == FALSE)
                     <div class="card">
                         <div class="card-body">
@@ -59,7 +56,6 @@
                             </table>
                         </div>
                     </div>
-            {{-- @endauth --}}
 
                 @else
                     <form method="post" action="{{route('ratings.store')}}" >
