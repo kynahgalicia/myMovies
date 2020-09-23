@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
 use App\Genres;
+use Auth;
 use Illuminate\Support\Facades\Validator;
 
 class GenresController extends Controller
@@ -28,7 +29,9 @@ class GenresController extends Controller
      */
     public function create()
     {
-        return View::make('genres.create');
+        if(Auth::user()->is_admin){
+            return View::make('genres.create');
+        }
     }
 
     /**
@@ -39,19 +42,21 @@ class GenresController extends Controller
      */
     public function store(Request $request)
     {
-        $rules = [
+        if(Auth::user()->is_admin){
+            $rules = [
             'genre' =>'required|profanity|string',
-        ];
+            ];
 
-        $formData = $request->all();
-        $validator = Validator::make($formData, $rules);
+            $formData = $request->all();
+            $validator = Validator::make($formData, $rules);
 
-        if($validator->passes()){
-            Genres::create($formData);
+            if($validator->passes()){
+                Genres::create($formData);
 
-            return Redirect::to('genres')->with('success','New Genre added!');
+                return Redirect::to('genres')->with('success','New Genre added!');
+            }
+            return redirect()->back()->withInput()->withErrors($validator);
         }
-        return redirect()->back()->withInput()->withErrors($validator);
     }
 
     /**
@@ -75,8 +80,10 @@ class GenresController extends Controller
      */
     public function edit($id)
     {
-        $genres = Genres::find($id);
-        return view('genres.edit',compact('genres'));
+        if(Auth::user()->is_admin){
+            $genres = Genres::find($id);
+            return view('genres.edit',compact('genres'));
+        }
     }
 
     /**
@@ -88,9 +95,11 @@ class GenresController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $genres = Genres::find($id);
-        $genres->update($request->all());
-        return Redirect::to('/genres')->with('success','Genre data updated!');
+        if(Auth::user()->is_admin){
+            $genres = Genres::find($id);
+            $genres->update($request->all());
+            return Redirect::to('/genres')->with('success','Genre data updated!');
+        }
     }
 
     /**
@@ -101,8 +110,14 @@ class GenresController extends Controller
      */
     public function destroy($id)
     {
-        $genres = Genres::findOrFail($id);
-        $genres->delete();
-        return Redirect::to('/genres')->with('success','Genre data deleted!');
+        if(Auth::user()->is_admin){
+            $genres = Genres::findOrFail($id);
+            $genres->delete();
+            return Redirect::to('/genres')->with('success','Genre data deleted!');
+        }
+    }
+
+    public function __construct(){
+        $this->middleware('auth',['except' => ['index','show']]);
     }
 }

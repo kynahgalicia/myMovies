@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
 use App\Producers;
+use Auth;
 use Illuminate\Support\Facades\Validator;
 
 class ProducersController extends Controller
@@ -28,7 +29,9 @@ class ProducersController extends Controller
      */
     public function create()
     {
-        return View::make('producers.create');
+        if (Auth::user()->is_admin) {
+            return View::make('producers.create');
+        }
     }
 
     /**
@@ -39,21 +42,23 @@ class ProducersController extends Controller
      */
     public function store(Request $request)
     {
-        $rules = [
+        if (Auth::user()->is_admin) {
+            $rules = [
             'name' =>'required|profanity|string',
             'birthday'=>'required|date',
             'notes'=>'required|profanity|string|min:1|max:100'
-        ];
+            ];
 
-        $formData = $request->all();
-        $validator = Validator::make($formData, $rules);
+            $formData = $request->all();
+            $validator = Validator::make($formData, $rules);
 
-        if($validator->passes()){
-            Producers::create($request->all());
+            if($validator->passes()){
+                Producers::create($request->all());
 
-            return Redirect::to('producers')->with('success','New Producer added!');
+                return Redirect::to('producers')->with('success','New Producer added!');
+            }
+            return redirect()->back()->withInput()->withErrors($validator);
         }
-        return redirect()->back()->withInput()->withErrors($validator);
     }
 
     /**
@@ -77,8 +82,11 @@ class ProducersController extends Controller
      */
     public function edit($id)
     {
-        $producers = Producers::find($id);
+        if (Auth::user()->is_admin) {
+            $producers = Producers::find($id);
         return view('producers.edit',compact('producers'));
+        }
+        
     }
 
     /**
@@ -90,9 +98,12 @@ class ProducersController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $producers = Producers::find($id);
-        $producers->update($request->all());
-        return Redirect::to('/producers')->with('success','Producer data updated!');
+        if (Auth::user()->is_admin) {
+            $producers = Producers::find($id);
+            $producers->update($request->all());
+            return Redirect::to('/producers')->with('success','Producer data updated!');
+        }
+        
     }
 
     /**
@@ -103,8 +114,15 @@ class ProducersController extends Controller
      */
     public function destroy($id)
     {
-        $producers = Producers::findOrFail($id);
-        $producers->delete();
-        return Redirect::to('/producers')->with('success','Producers data deleted!');
+        if (Auth::user()->is_admin) {
+            $producers = Producers::findOrFail($id);
+            $producers->delete();
+            return Redirect::to('/producers')->with('success','Producers data deleted!');
+        }
+        
+    }
+
+    public function __construct(){
+        $this->middleware('auth',['except' => ['index','show']]);
     }
 }

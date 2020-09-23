@@ -23,11 +23,16 @@
                 
             </p>
 
-            <a href="{{route('actormovieroles.create')}}" class="btn btn-primary a-btn-slide-text" >
-                <span class="glyphicon glyphicon-plus" aria-hidden="true" ></span>
-                <span><strong>Add Cast</strong></span>            
-            </a><br><br>
-
+            @auth
+                @if(Auth::user()->is_admin)
+                    <a href="{{route('actormovieroles.create')}}" class="btn btn-primary a-btn-slide-text" >
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true" ></span>
+                        <span><strong>Add Cast</strong></span>            
+                    </a><br><br>
+                @endif
+                
+            {{-- @endauth --}}
+            
                 @if ($name == FALSE)
                     <div class="card">
                         <div class="card-body">
@@ -52,10 +57,11 @@
                             </table>
                         </div>
                     </div>
+            {{-- @endauth --}}
 
                 @else
                     <form method="post" action="{{route('ratings.store')}}" >
-                    
+                            
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                             
                         <input type="hidden" name="movie_id" value="{{$movies[0]['movies_id']}}">
@@ -77,10 +83,41 @@
                             </div>
                             
                         <button type="submit" class="btn btn-primary">Save</button>
-            
+                        
                     </form>
+
                 @endif
 
+            @endauth
+
+            @guest
+                <div class="card">
+                    <div class="card-body">
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Rating</th>
+                                    <th>Comment</th>
+                                </tr>
+                            </thead>
+                            
+                            <tbody>
+                                @foreach ($ratings as $rating)
+                                    <tr>
+                                        <td>{{$rating['users']['name']}}</td>
+                                        <td>{{$rating['rating']}}</td>
+                                        <td>{{$rating['comment']}}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            @endguest
+
+            
+            
             <br><a href="{{route('movies.index')}}" class="btn-group-xs" role="button" style="color: gray">Back</a>
 
         </div>

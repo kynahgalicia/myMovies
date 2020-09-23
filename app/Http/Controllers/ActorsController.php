@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
 use App\Actors;
+use Auth;
 use Illuminate\Support\Facades\Validator;
 
 
@@ -31,7 +32,9 @@ class ActorsController extends Controller
      */
     public function create()
     {
-        return View::make('actors.create');
+        if(Auth::user()->is_admin){
+            return View::make('actors.create');
+        }
     }
 
     /**
@@ -42,25 +45,27 @@ class ActorsController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
-        $rules = [
+        if(Auth::user()->is_admin){
+            $rules = [
             'name' =>'required|profanity|string|min:1',
             'birthday'=>'date|required',
             'notes'=>'required|profanity|string|min:1|max:1000'
-        ];
+            ];
 
-        $formData = $request->all();
-        $file = $formData['images']->getClientOriginalName();
-        $formData['images'] = $file;
+            $formData = $request->all();
+            $file = $formData['images']->getClientOriginalName();
+            $formData['images'] = $file;
 
-        $validator = Validator::make($formData, $rules);
+            $validator = Validator::make($formData, $rules);
 
-        if ($validator->passes()) {
-            Actors::create($formData);
-            $request->file('images')->move(storage_path().'/app/public/images/actors', $request->file('images')->getClientOriginalName());
-            return Redirect::to('actors')->with('success','New Actor Record added!');
+            if ($validator->passes()) {
+                Actors::create($formData);
+                $request->file('images')->move(storage_path().'/app/public/images/actors', $request->file('images')->getClientOriginalName());
+                return Redirect::to('actors')->with('success','New Actor Record added!');
+            }
+            return redirect()->back()->withInput()->withErrors($validator);
         }
-        return redirect()->back()->withInput()->withErrors($validator);
+        
     }
 
     /**
@@ -86,8 +91,10 @@ class ActorsController extends Controller
      */
     public function edit($id)
     {
-        $actors = Actors::find($id);
-        return view('actors.edit',compact('actors'));
+        if(Auth::user()->is_admin){
+            $actors = Actors::find($id);
+            return view('actors.edit',compact('actors'));
+        }
     }
 
     /**
@@ -99,10 +106,12 @@ class ActorsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $actors = Actors::find($id);
-        // dd($customer);
-        $actors->update($request->all());
-        return Redirect::to('/actors')->with('success','Actor Data Updated!');
+        if(Auth::user()->is_admin){
+            $actors = Actors::find($id);
+            // dd($customer);
+            $actors->update($request->all());
+            return Redirect::to('/actors')->with('success','Actor Data Updated!');
+        }
     }
 
     /**
@@ -113,14 +122,23 @@ class ActorsController extends Controller
      */
     public function destroy($id)
     {
-        $actors = Actors::findOrFail($id);
-        $actors->delete();
-        return Redirect::to('/actors')->with('success','Actor Data Deleted!');
+        if(Auth::user()->is_admin){
+            $actors = Actors::findOrFail($id);
+            $actors->delete();
+            return Redirect::to('/actors')->with('success','Actor Data Deleted!');
+        }
     }
 
     public function restore($id)
     {
-        Actors::withTrashed()->where('id',$id)->restore();
-        return  Redirect::route('actors.index')->with('success','Actor restored successfully!');
+        if(Auth::user()->is_admin){
+            Actors::withTrashed()->where('actors_id',$id)->restore();
+            return  Redirect::route('actors.index')->with('success','Actor restored successfully!');
+        }
+        
+    }
+
+    public function __construct(){
+        $this->middleware('auth',['except' => ['index','show']]);
     }
 }

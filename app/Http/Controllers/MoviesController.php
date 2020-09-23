@@ -35,9 +35,11 @@ class MoviesController extends Controller
      */
     public function create()
     {
-        $genres = Genres::pluck('genre','genres_id');
-        $producers = Producers::pluck('name','producers_id');
-        return View::make('movies.create', compact('genres','producers'));
+        if(Auth::user()->is_admin){
+            $genres = Genres::pluck('genre','genres_id');
+            $producers = Producers::pluck('name','producers_id');
+            return View::make('movies.create', compact('genres','producers'));
+        }
     }
 
     /**
@@ -48,40 +50,42 @@ class MoviesController extends Controller
      */
     public function store(Request $request)
     {
-        $rules = [
-            'title' =>'required|string',
-            'year' => 'required|integer|min:' . (date("Y") - 100) . '|max:' . date("Y"),
-            'plot'=>'required|profanity|string|min:1|max:1000',
-            'runtime'=>'required|integer|min:100|max:200',
-            'images'=>'required',
-            'genres_id' => 'required|integer',
-            'producers_id' => 'required|integer'
-        ];
-
-        $formData = $request->all();
-
-        $validator = Validator::make($formData, $rules);
-
-        if($validator->passes()){
-
-            $genre = Genres::find($formData['genres_id']);
-            $producer = Producers::find($formData['producers_id']);
-            // dd($producer->producers_id);
-            
-            $movies = new Movies();
-            $movies->title = $formData['title'];
-            $movies->plot = $formData['plot'];
-            $movies->runtime = $formData['runtime'];
-            $movies->year = $formData['year'];
-            $movies->images = $request->file('images')->getClientOriginalName();
-            $request->file('images')->move(storage_path().'/app/public/images/movies/', $request->file('images')->getClientOriginalName());
-            $movies->genres()->associate($genre);
-            $movies->producers()->associate($producer);
-            $movies->save();
-
-            return Redirect::to('movies')->with('success','New Movie added!');
+        if(Auth::user()->is_admin){
+            $rules = [
+                'title' =>'required|string',
+                'year' => 'required|integer|min:' . (date("Y") - 100) . '|max:' . date("Y"),
+                'plot'=>'required|profanity|string|min:1|max:1000',
+                'runtime'=>'required|integer|min:100|max:200',
+                'images'=>'required',
+                'genres_id' => 'required|integer',
+                'producers_id' => 'required|integer'
+            ];
+    
+            $formData = $request->all();
+    
+            $validator = Validator::make($formData, $rules);
+    
+            if($validator->passes()){
+    
+                $genre = Genres::find($formData['genres_id']);
+                $producer = Producers::find($formData['producers_id']);
+                // dd($producer->producers_id);
+                
+                $movies = new Movies();
+                $movies->title = $formData['title'];
+                $movies->plot = $formData['plot'];
+                $movies->runtime = $formData['runtime'];
+                $movies->year = $formData['year'];
+                $movies->images = $request->file('images')->getClientOriginalName();
+                $request->file('images')->move(storage_path().'/app/public/images/movies/', $request->file('images')->getClientOriginalName());
+                $movies->genres()->associate($genre);
+                $movies->producers()->associate($producer);
+                $movies->save();
+    
+                return Redirect::to('movies')->with('success','New Movie added!');
+            }
+            return redirect()->back()->withInput()->withErrors($validator);
         }
-        return redirect()->back()->withInput()->withErrors($validator);
     
     }
 
@@ -101,9 +105,12 @@ class MoviesController extends Controller
         // dd($amr);
         $ratings = Movies::find($id)->ratings()->with('users')->get();
         // dd($ratings);
-        $name = Ratings::where([['movie_id', '=', $id],['user_id', '=', Auth::user()->id]])->get()->isEmpty();
-
-        return View::make('movies.show',compact('movies','amr','ratings','name'));
+        if (Auth::user()) {
+            $name = Ratings::where([['movie_id', '=', $id],['user_id', '=', Auth::user()->id]])->get()->isEmpty();
+            // dd($name);
+            return View::make('movies.show',compact('movies','amr','ratings','name'));
+        }
+        return View::make('movies.show',compact('movies','amr','ratings'));
     }
 
     // public function if_exist($ratings){
@@ -118,10 +125,12 @@ class MoviesController extends Controller
      */
     public function edit($id)
     {
-        $genres = Genres::pluck('genre','genres_id');
-        $producers = Producers::pluck('name','producers_id');
-        $movies = Movies::find($id);
-        return view('movies.edit',compact('movies','genres','producers'));
+        if(Auth::user()->is_admin){
+            $genres = Genres::pluck('genre','genres_id');
+            $producers = Producers::pluck('name','producers_id');
+            $movies = Movies::find($id);
+            return view('movies.edit',compact('movies','genres','producers'));
+        }
     }
 
     /**
@@ -133,18 +142,20 @@ class MoviesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $movies = Movies::find($id);
-        $movies = Movies::where('movies_id',$id)->update([
-            'title'=>$request->title,
-            'year'=>$request->year,
-            'runtime'=>$request->runtime,
-            'plot'=>$request->plot,
-            'genres_id'=>$request->genres_id,
-            'producers_id'=>$request->producers_id
-        ]);
-        
-        // $movies->update($request->all());
-        return Redirect::to('/movies')->with('success','Movie data updated!');
+        if(Auth::user()->is_admin){
+            $movies = Movies::find($id);
+            $movies = Movies::where('movies_id',$id)->update([
+                'title'=>$request->title,
+                'year'=>$request->year,
+                'runtime'=>$request->runtime,
+                'plot'=>$request->plot,
+                'genres_id'=>$request->genres_id,
+                'producers_id'=>$request->producers_id
+            ]);
+            
+            // $movies->update($request->all());
+            return Redirect::to('/movies')->with('success','Movie data updated!');
+        }
     }
 
     /**
@@ -155,14 +166,22 @@ class MoviesController extends Controller
      */
     public function destroy($id)
     {
-        $movies = Movies::findOrFail($id);
-        $movies->delete();
-        return Redirect::to('/movies')->with('success','Movie data deleted!');
+        if(Auth::user()->is_admin){
+            $movies = Movies::findOrFail($id);
+            $movies->delete();
+            return Redirect::to('/movies')->with('success','Movie data deleted!');
+        }
     }
 
     public function restore($id) 
     {
-        Movies::withTrashed()->where('movies_id',$id)->restore();
-        return  Redirect::route('movies.index')->with('success','Movie restored successfully!');
+        if(Auth::user()->is_admin){
+            Movies::withTrashed()->where('movies_id',$id)->restore();
+            return  Redirect::route('movies.index')->with('success','Movie restored successfully!');
+        }
+    }
+
+    public function __construct(){
+        $this->middleware('auth',['except' => ['index','show']]);
     }
 }

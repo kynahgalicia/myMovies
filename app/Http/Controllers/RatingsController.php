@@ -35,8 +35,6 @@ class RatingsController extends Controller
     public function create()
     {
         $movies = Movies::pluck('title','movies_id'); 
-        // dd($movies);
-        // $users = Auth::user()->id;
         
         return View::make('ratings.create', compact('movies'));
     }
@@ -124,8 +122,11 @@ class RatingsController extends Controller
      */
     public function destroy($id)
     {
-        $ratings = Ratings::findOrFail($id);
-        $ratings->delete();
-        return Redirect::to('/ratings')->with('success','Rating data deleted!');
+        if (Auth::user()->is_admin) {
+            $ratings = Ratings::findOrFail($id);
+            $ratings->delete();
+            return Redirect::to('/ratings')->with('success','Rating data deleted!');
+        }
+        
     }
 }

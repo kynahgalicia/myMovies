@@ -33,8 +33,14 @@
                         <th>User</th>
                         <th>Rating</th>
                         <th>Comment</th>
-                        <th>Edit</th>
-                        <th>Delete</th>
+                        @auth
+                            @if (Auth::user()->is_admin)
+                                <th>Edit</th>
+                                <th>Delete</th>
+                            @endif
+                            
+                        @endauth
+                        
                         </tr>
                     </thead>
 
@@ -45,12 +51,18 @@
                                 <td>{{$rating->users->name}}</td>
                                 <td>{{$rating->rating}}</td>
                                 <td>{{$rating->comment}}</td>
-                                <td align="left"><a href="{{ route('ratings.edit',$rating->ratings_id) }}"> <i class="fa fa-pencil-square-o" aria-hidden="true" style="font-size:24px" ></a></i></td>
-                                <td align="left">
-                                    {!! Form::open(array('route' => array('ratings.destroy', $rating->ratings_id),'method'=>'DELETE')) !!}
-                                        <button><i class="fa fa-trash-o" style="font-size:24px; color:red" ></i></button>
-                                    {!! Form::close() !!}
-                                </td>
+                                @auth
+                                    @if (Auth::user()->is_admin)
+                                        <td align="left"><a href="{{ route('ratings.edit',$rating->ratings_id) }}"> <i class="fa fa-pencil-square-o" aria-hidden="true" style="font-size:24px" ></a></i></td>
+                                        <td align="left">
+                                            {!! Form::open(array('route' => array('ratings.destroy', $rating->ratings_id),'method'=>'DELETE')) !!}
+                                                <button><i class="fa fa-trash-o" style="font-size:24px; color:red" ></i></button>
+                                            {!! Form::close() !!}
+                                        </td>
+                                    @endif
+                                    
+                                @endauth
+                                
                             </tr>
 
                         @endforeach

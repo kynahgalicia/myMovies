@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
 use App\Roles;
+use Auth;
 use Illuminate\Support\Facades\Validator;
 
 class RolesController extends Controller
@@ -28,7 +29,10 @@ class RolesController extends Controller
      */
     public function create()
     {
-        return View::make('roles.create');
+        if (Auth::user()->is_admin) {
+            return View::make('roles.create');
+        }
+        
     }
 
     /**
@@ -39,19 +43,22 @@ class RolesController extends Controller
      */
     public function store(Request $request)
     {
-        $rules = [
+        if (Auth::user()->is_admin) {
+            $rules = [
             'roles' =>'required|string',
-        ];
+            ];
 
-        $formData = $request->all();
-        $validator = Validator::make($formData, $rules);
+            $formData = $request->all();
+            $validator = Validator::make($formData, $rules);
 
-        if($validator->passes()){
-            Roles::create($request->all());
+            if($validator->passes()){
+                Roles::create($request->all());
 
-            return Redirect::to('roles')->with('success','New Role added!');
+                return Redirect::to('roles')->with('success','New Role added!');
+            }
+            return redirect()->back()->withInput()->withErrors($validator);
         }
-        return redirect()->back()->withInput()->withErrors($validator);
+        
     }
 
     /**
@@ -77,8 +84,11 @@ class RolesController extends Controller
      */
     public function edit($id)
     {
-        $roles = Roles::find($id);
-        return view('roles.edit',compact('roles'));
+        if (Auth::user()->is_admin) {
+            $roles = Roles::find($id);
+            return view('roles.edit',compact('roles'));
+        }
+        
     }
 
     /**
@@ -90,9 +100,12 @@ class RolesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $roles = Roles::find($id);
-        $roles->update($request->all());
-        return Redirect::to('/roles')->with('success','Role data updated!');
+        if (Auth::user()->is_admin) {
+            $roles = Roles::find($id);
+            $roles->update($request->all());
+            return Redirect::to('/roles')->with('success','Role data updated!');
+        }
+        
     }
 
     /**
@@ -103,8 +116,15 @@ class RolesController extends Controller
      */
     public function destroy($id)
     {
-        $roles = Roles::findOrFail($id);
-        $roles->delete();
-        return Redirect::to('/roles')->with('success','Role data deleted!');
+        if (Auth::user()->is_admin) {
+            $roles = Roles::findOrFail($id);
+            $roles->delete();
+            return Redirect::to('/roles')->with('success','Role data deleted!');
+        }
+        
+    }
+
+    public function __construct(){
+        $this->middleware('auth',['except' => ['index','show']]);
     }
 }
