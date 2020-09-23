@@ -18,7 +18,8 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/', 'HomeController@index')->name('home');
 
 Route::get('contact','ContactFormController@create');
-Route::post('contact','ContactFormController@store');
+Route::post('contact_user','ContactFormController@store_admin');
+Route::post('contact_admin','ContactFormController@store_user');
 
 Route::resource('actors', 'ActorsController');
 Route::resource('movies', 'MoviesController');
