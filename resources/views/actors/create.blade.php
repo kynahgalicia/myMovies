@@ -14,7 +14,7 @@
 
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
-            Upload an image:<br>
+            <upload>Upload an image:</upload><br>
             <input type="file" name="images" /><br><br>
 
             <div class="form-group">
