@@ -10,8 +10,8 @@
 
 
 <div class="container">
-    
-    <h2>Inform our team</h2>
+    <div class="jumbotron text-left" style="background-color: #3C3F58">
+        <h2>Inform our team</h2>
         
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
         
@@ -58,9 +58,9 @@
             @endif
         </div>
     
-    <button type="submit" class="btn btn-primary">Send</button>
-    <a href="{{url()->previous()}}" class="btn btn-default" role="button">Cancel</a>
-    
+        <button type="submit" class="btn btn-primary">Send</button>
+        <a href="{{url()->previous()}}" class="btn btn-default" role="button">Cancel</a>
+    </div>
 </div> 
 
 </form>
