@@ -6,7 +6,7 @@
 
     <h1>Producers</h1>
 
-        <div class="jumbotron text-left">
+        <div class="jumbotron text-left" style="background-color: #3C3F58">
             <h2>{{ $producers->name }}</h2>
             <p>
                 <strong align="left">Birthday:</strong> {{ $producers->birthday }}<br>
