@@ -18,13 +18,13 @@
                 @if (Auth::user()->is_admin)
                     <a href="{{route('movies.create')}}" class="btn btn-primary a-btn-slide-text">
                         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                        <span><strong>ADD</strong></span>            
+                        <span><strong>ADD</strong></span>
                     </a>
                 @endif
 
                 @if ($message = Session::get('success'))
                 <div class="alert alert-success alert-block">
-                    <button type="button" class="close" data-dismiss="alert">×</button> 
+                    <button type="button" class="close" data-dismiss="alert">×</button>
                     <strong>{{ $message }}</strong>
                 </div>
                 @endif
@@ -34,7 +34,7 @@
             <div class="table-responsive">
                 <table class="table table-striped table-hover">
                     <thead>
-                        <tr>    
+                        <tr>
                         <th>Movies ID</th>
                         <th>Title</th>
 
@@ -63,13 +63,13 @@
                                                 <button><i class="fa fa-trash-o" style="font-size:24px; color:red" ></i></button>
                                             {!! Form::close() !!}
                                         </td>
-        
+
                                         <td align="left"><a href="{{ route('movies.restore',$movie->movies_id) }}" ><i class="fa fa-undo" style="font-size:24px; color:green" ></i></a></td>
                                     @endif
                                 @endauth
-                                
+
                                 {{-- @endforeach --}}
-                                    
+
                             </tr>
 
                         @endforeach

@@ -21,16 +21,19 @@
 
     <!-- Glyphicon -->
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+
+    {{-- CSS Import --}}
+    <link rel="stylesheet" href="/css/newstyle.css">
 </head>
 
-<body>
+<body style="background-color: #43455c">
 
 
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <nav class="navbar navbar-expand-md navbar-dark shadow-sm" style="background-color: #2E3047">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/movies') }}">
-                    <th>myMovies</th>
+                    <img src="{{ asset('images/webicon.png') }}" width="30" height="30" alt="">
                 </a>
 
                 <a class="navbar-brand" href="{{ url('/actors') }}">

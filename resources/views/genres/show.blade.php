@@ -6,7 +6,7 @@
 
     <h1>Genres</h1>
 
-        <div class="jumbotron text-left">
+        <div class="jumbotron text-left" style="background-color: #3C3F58">
             {{-- <h2>{{ $genres->genre }}</h2> --}}
             <p>
                 <strong align="left">Genre Name:</strong> {{ $genres->genre }}
