@@ -9,13 +9,6 @@
     <form method="post" action="{{route('actormovieroles.store')}}" >
         
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
-        
-        {{-- <ul class="errors">
-            @foreach($errors->all() as $message)
-            <li><p>{{ $message }}</p></li>
-            @endforeach
-        </ul> --}}
-        {{-- {{dd($errors)}}; --}}
 
         <div class="form-group">
             <label for="movies_id">Movies:</label>

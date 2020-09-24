@@ -9,13 +9,7 @@
     <form method="post" action="{{route('movies.store')}}" enctype="multipart/form-data" >
 
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
-
-        {{-- <ul class="errors">
-            @foreach($errors->all() as $message)
-            <li><p>{{ $message }}</p></li>
-            @endforeach
-        </ul> --}}
-        {{-- {{dd($errors)}}; --}}
+        
         <upload>Upload an image:</upload><br>
         <input type="file" name="images" /><br><br>
 

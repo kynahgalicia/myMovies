@@ -57,7 +57,9 @@
                                 
                                 @auth
                                     @if(Auth::user()->is_admin)
-                                        <td align="left"><a href="{{ route('producers.edit',$producer->producers_id) }}"> <i class="fa fa-pencil-square-o" aria-hidden="true" style="font-size:24px" ></a></i></td>
+                                        <td align="left">
+                                            <a href="{{ route('producers.edit',$producer->producers_id) }}"> 
+                                                <i class="fa fa-pencil-square-o" aria-hidden="true" style="font-size:24px" ></a></i></td>
                                         <td align="left">
                                             {!! Form::open(array('route' => array('producers.destroy', $producer->producers_id),'method'=>'DELETE')) !!}
                                                 <button><i class="fa fa-trash-o" style="font-size:24px; color:red" ></i></button>

@@ -10,9 +10,10 @@ use App\User;
 class ContactFormController extends Controller
 {
     public function create(){
-        $user = User::all()->mapWithKeys(function($user) {
-            return [$user['email']=>"$user[email]"];
-        });
+        $user = User::pluck('email','id');
+        // $user = User::all()->mapWithKeys(function($user) {
+        //     return [$user['email']=>"$user[email]"];
+        // });
         return view('contact.create',compact('user'));
     }
 
@@ -32,7 +33,6 @@ class ContactFormController extends Controller
 
     public function store_user(){
 
-        // dd(request());
         $data = request()->validate([
             'email' => 'required|email',
             'message' => 'required'

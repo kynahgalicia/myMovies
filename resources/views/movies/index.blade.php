@@ -57,18 +57,22 @@
 
                                 @auth
                                     @if (Auth::user()->is_admin)
-                                        <td align="left"><a href="{{ route('movies.edit',$movie->movies_id) }}"> <i class="fa fa-pencil-square-o" aria-hidden="true" style="font-size:24px" ></a></i></td>
+                                        <td align="left">
+                                            <a href="{{ route('movies.edit',$movie->movies_id) }}"> 
+                                                <i class="fa fa-pencil-square-o" aria-hidden="true" style="font-size:24px" ></a></i></td>
                                         <td align="left">
                                             {!! Form::open(array('route' => array('movies.destroy', $movie->movies_id),'method'=>'DELETE')) !!}
                                                 <button><i class="fa fa-trash-o" style="font-size:24px; color:red" ></i></button>
                                             {!! Form::close() !!}
                                         </td>
 
-                                        <td align="left"><a href="{{ route('movies.restore',$movie->movies_id) }}" ><i class="fa fa-undo" style="font-size:24px; color:green" ></i></a></td>
+                                        <td align="left">
+                                            <a href="{{ route('movies.restore',$movie->movies_id) }}" >
+                                                <i class="fa fa-undo" style="font-size:24px; color:green" ></i>
+                                            </a>
+                                        </td>
                                     @endif
                                 @endauth
-
-                                {{-- @endforeach --}}
 
                             </tr>
 
@@ -82,7 +86,6 @@
 
             {{-- PAGINATION --}}
             <div>{{$movies->links()}}</div>
-            {{-- <div>{!! $movies->render() !!}</div> --}}
 
         </div>
 

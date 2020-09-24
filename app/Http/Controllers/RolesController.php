@@ -71,7 +71,6 @@ class RolesController extends Controller
     {
         $roles = Roles::find($id);
         $amr = Roles::find($id)->actormovieroles()->with(['movies','actors'])->get()->toArray();
-        // dd($amr);
 
         return View::make('roles.show',compact('roles','amr'));
     }

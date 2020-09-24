@@ -20,8 +20,7 @@ class ActorsController extends Controller
     public function index()
     {
         $actors = Actors::orderBy('actors_id','ASC')->withTrashed()->paginate(10);
-        // $actors = Actors::all();
-        // dd($actors);
+
         return View::make('actors.index',compact('actors'));
     }
 
@@ -78,7 +77,6 @@ class ActorsController extends Controller
     {
         $actors = Actors::find($id);
         $amr = Actors::find($id)->actormovieroles()->with(['movies','roles'])->get()->toArray();
-        // dd($actors);
 
         return View::make('actors.show',compact('actors','amr'));
     }
@@ -108,8 +106,6 @@ class ActorsController extends Controller
     {
         if(Auth::user()->is_admin){
             $actors = Actors::find($id);
-            // dd($customer);
-            // $actors->update($request->all());
             $formData = $request->all();
             $actors->name = $formData['name'];
             $actors->birthday = $formData['birthday'];

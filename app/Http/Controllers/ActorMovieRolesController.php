@@ -33,7 +33,6 @@ class ActorMovieRolesController extends Controller
         $actors = Actors::pluck('name','actors_id');
         $roles = Roles::pluck('roles','roles_id');
         $movies = Movies::pluck('title','movies_id');
-        // dd($actors);
         return View::make('actormovieroles.create', compact('actors','roles','movies'));
     }
 

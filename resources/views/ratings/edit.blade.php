@@ -7,8 +7,6 @@
     <h2>Edit Ratings</h2>
 
     {!! Form::model($ratings,['method'=>'PATCH','route' => ['ratings.update',$ratings->ratings_id]])!!}
-        {{-- {{csrf_field()}}
-        {{ method_field('PATCH') }} --}}
 
     <div class="form-group">
         <label for="rating" class="control-label">Rating</label>

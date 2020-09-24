@@ -50,7 +50,6 @@ class MoviesController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->file('images'));
         if(Auth::user()->is_admin){
             $rules = [
                 'title' =>'required|string',
@@ -70,7 +69,6 @@ class MoviesController extends Controller
     
                 $genre = Genres::find($formData['genres_id']);
                 $producer = Producers::find($formData['producers_id']);
-                // dd($producer->producers_id);
                 
                 $movies = new Movies();
                 $movies->title = $formData['title'];
@@ -98,17 +96,13 @@ class MoviesController extends Controller
      */
     public function show($id)
     {
-        // $temp = Movies::where('movies_id','=',$id);
 
         $movies = Movies::where('movies_id','=',$id)->with(['genres','producers'])->get();
-        // dd($movies);
         $amr = Movies::find($id)->actormovieroles()->with(['actors','roles'])->get()->toArray();
-        // dd($amr);
         $ratings = Movies::find($id)->ratings()->with('users')->get();
-        // dd($ratings);
+
         if (Auth::user()) {
             $name = Ratings::where([['movie_id', '=', $id],['user_id', '=', Auth::user()->id]])->get()->isEmpty();
-            // dd($name);
             return View::make('movies.show',compact('movies','amr','ratings','name'));
         }
         return View::make('movies.show',compact('movies','amr','ratings'));
@@ -162,8 +156,6 @@ class MoviesController extends Controller
             
             $movies->save();
             
-            
-            // $movies->update($request->all());
             return Redirect::to('/movies')->with('success','Movie data updated!');
         }
     }

@@ -7,8 +7,6 @@
     <h2>Edit Roles</h2>
 
     {!! Form::model($roles,['method'=>'PATCH','route' => ['roles.update',$roles->roles_id]])!!}
-        {{-- {{csrf_field()}}
-        {{ method_field('PATCH') }} --}}
 
     <div class="form-group">
         <label for="roles" class="control-label">Roles</label>

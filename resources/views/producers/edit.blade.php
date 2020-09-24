@@ -7,8 +7,6 @@
     <h2>Edit Producers</h2>
 
     {!! Form::model($producers,['method'=>'PATCH','route' => ['producers.update',$producers->producers_id]])!!}
-        {{-- {{csrf_field()}}
-        {{ method_field('PATCH') }} --}}
 
     <div class="form-group">
         <label for="name" class="control-label">Name</label>

@@ -13,11 +13,6 @@
 
         <div class="container">
 
-            {{-- <a href="{{route('ratings.create')}}" class="btn btn-primary a-btn-slide-text">
-                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                    <span><strong>ADD</strong></span>            
-            </a> --}}
-
             @if ($message = Session::get('success'))
                 <div class="alert alert-success alert-block">
                     <button type="button" class="close" data-dismiss="alert">×</button> 
@@ -53,7 +48,9 @@
                                 <td>{{$rating->comment}}</td>
                                 @auth
                                     @if (Auth::user()->is_admin)
-                                        <td align="left"><a href="{{ route('ratings.edit',$rating->ratings_id) }}"> <i class="fa fa-pencil-square-o" aria-hidden="true" style="font-size:24px" ></a></i></td>
+                                        <td align="left">
+                                            <a href="{{ route('ratings.edit',$rating->ratings_id) }}"> 
+                                                <i class="fa fa-pencil-square-o" aria-hidden="true" style="font-size:24px" ></a></i></td>
                                         <td align="left">
                                             {!! Form::open(array('route' => array('ratings.destroy', $rating->ratings_id),'method'=>'DELETE')) !!}
                                                 <button><i class="fa fa-trash-o" style="font-size:24px; color:red" ></i></button>
@@ -75,7 +72,6 @@
 
             {{-- PAGINATION --}}
             <div>{{$ratings->links()}}</div>
-            {{-- <div>{!! $movies->render() !!}</div> --}}
 
         </div>
 

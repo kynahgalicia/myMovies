@@ -10,7 +10,6 @@ use App\Movies;
 use App\User;
 use App\Ratings;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\DB;
 
 class RatingsController extends Controller
 {
@@ -22,7 +21,6 @@ class RatingsController extends Controller
     public function index()
     {
         $ratings = Ratings::orderBy('movie_id','ASC')->with('movies','users')->paginate(10);
-        // dd($ratings);
 
         return View::make('ratings.index',compact('ratings'));
     }
@@ -55,7 +53,6 @@ class RatingsController extends Controller
         ];
 
         $formData = $request->all();
-        // dd($formData);
         $validator = Validator::make($formData, $rules);
 
         if($validator->passes()){
@@ -65,7 +62,6 @@ class RatingsController extends Controller
             $ratings->comment = $formData['comment'];
             $ratings->movie_id = $formData['movie_id'];
             $ratings->user_id = Auth::user()->id;
-            // dd($ratings);
             $ratings->save();
 
             return Redirect::to('movies')->with('success','New Rating added!');

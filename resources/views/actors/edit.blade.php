@@ -3,9 +3,7 @@
     <div class="container">
     <h2>Edit Actor Details</h2>
     {!! Form::model($actors,['method'=>'PATCH','route' => ['actors.update',$actors->actors_id], 'files'=>true]) !!}
-    {{-- {{ Form::model($actor,['route' => ['actor.update',$actor->id]]) }}
-        {{csrf_field()}}
-        {{ method_field('PATCH') }} --}}
+    
     Upload an image:<br>
     {{Form::file('images')}}
 

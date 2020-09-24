@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-{{-- CSS Import --}}
+
 <link rel="stylesheet" href="css/newstyle.css">
 
 <div class="container">
@@ -15,11 +15,16 @@
                 <strong align="left">Year:</strong> {{ $movies[0]['year'] }}<br>
                 <strong align="left">Runtime:</strong> {{ $movies[0]['runtime'] }}<br>
                 <strong align="left">Plot:</strong> {{ $movies[0]['plot'] }}<br><br>
-                <strong align="left">Genre:</strong> <a href="{{route('genres.show',$movies[0]['genres']['genres_id'])}}"> {{ $movies[0]['genres']['genre'] }}</a><br>
-                <strong align="left">Producer:</strong> <a href="{{route('producers.show',$movies[0]['producers']['producers_id'])}}"> {{ $movies[0]['producers']['name'] }}</a><br>
+                <strong align="left">Genre:</strong> 
+                <a href="{{route('genres.show',$movies[0]['genres']['genres_id'])}}"> {{ $movies[0]['genres']['genre'] }}</a><br>
+                <strong align="left">Producer:</strong> 
+                <a href="{{route('producers.show',$movies[0]['producers']['producers_id'])}}"> {{ $movies[0]['producers']['name'] }}</a><br>
                 <strong align="left">Cast:</strong>
                 @foreach ($amr as $amrs)
-                    <li><a href="{{route('actors.show',$amrs['actors']['actors_id'])}}">{{$amrs['actors']['name']}}</a> as <a href="{{route('roles.show',$amrs['roles']['roles_id'])}}">{{$amrs['roles']['roles']}}</a></li>
+                    <li>
+                        <a href="{{route('actors.show',$amrs['actors']['actors_id'])}}">{{$amrs['actors']['name']}}</a> 
+                        as 
+                        <a href="{{route('roles.show',$amrs['roles']['roles_id'])}}">{{$amrs['roles']['roles']}}</a></li>
                 @endforeach
 
             </p>

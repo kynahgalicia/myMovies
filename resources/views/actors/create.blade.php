@@ -1,12 +1,7 @@
 @extends('layouts.app')
+
 @section('content')
-{{-- {{dd($errors)}} --}}
-{{-- display the error messages on a list
-    <ul class="errors">
-        @foreach($errors->all() as $message)
-        <li><p>{{ $message }}</p></li>
-        @endforeach
-    </ul> --}}
+
     <div class="container">
         <h2>Create New Actor Record</h2>
 
@@ -21,7 +16,7 @@
                 <label for="name" class="control-label">Name</label>
                 <input type="text" class="form-control" id="name" name="name" value="{{old('name')}}">
                 @if($errors->has('name'))
-                <small>{{ $errors->first('name') }}</small>
+                <small style="font-style:italic; color:red">{{ $errors->first('name') }}</small>
                 @endif
             </div>
 
@@ -29,7 +24,7 @@
                 <label for="birthday" class="control-label">Birthday</label>
                 <input type="text" class="form-control " id="birthday" name="birthday" value="{{old('birthday')}}" >
                 @if($errors->has('birthday'))
-                <small>{{ $errors->first('birthday') }}</small>
+                <small style="font-style:italic; color:red">{{ $errors->first('birthday') }}</small>
                 @endif
             </div>
 
@@ -37,7 +32,7 @@
                 <label for="notes" class="control-label">Notes</label>
                 <input type="text" class="form-control " id="notes" name="notes" value="{{old('notes')}}" >
                 @if($errors->has('notes'))
-                <small>{{ $errors->first('notes') }}</small>
+                <small style="font-style:italic; color:red">{{ $errors->first('notes') }}</small>
                 @endif
             </div>
 

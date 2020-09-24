@@ -7,8 +7,6 @@
     <h2>Edit Genres</h2>
 
     {!! Form::model($genres,['method'=>'PATCH','route' => ['genres.update',$genres->genres_id]])!!}
-        {{-- {{csrf_field()}}
-        {{ method_field('PATCH') }} --}}
 
     <div class="form-group">
         <label for="genre" class="control-label">Genre</label>
